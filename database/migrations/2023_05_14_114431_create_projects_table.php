@@ -18,7 +18,7 @@ class CreateProjectsTable extends Migration
             $table->string('project_name',20);
             $table->unsignedBigInteger('responsible_person_id');
             $table->foreign('responsible_person_id')->references('id')->on('users');
-            $table->string('status_code', 7);
+            $table->string('status_code', 7)->default('active');
                 // $table->foreign('status_code')->references('status_code')->on('statuses');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
@@ -26,7 +26,7 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('created_user_id');
             $table->timestamp('updated_at')->nullable();
             $table->unsignedBigInteger('updated_user_id');
-            $table->boolean('del_flg');
+            $table->boolean('del_flg')->default(false);
         });
     }
 

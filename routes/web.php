@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\ProjectController::class, 'index'])
+->middleware('auth')->name('projects.index');
+
+Route::get('/project/create', [App\Http\Controllers\ProjectController::class, 'create'])
+->middleware('auth')->name('projects.create');
+
+Route::post('/project/create', [App\Http\Controllers\ProjectController::class, 'store'])
+->middleware('auth')->name('projects.store');
+
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
+->middleware('auth')->name('user.index');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

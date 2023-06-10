@@ -19,25 +19,28 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'name' => '笹本健',
-                'email' => 'sasamoto@gmail.com'
+                'email' => 'sasamoto@gmail.com',
+                'admin' => true,
             ],
             [
                 'name' => '山田太郎',
-                'email' => 'yamada@gmail.com'
+                'email' => 'yamada@gmail.com',
+                'admin' => false,
             ],
             [
                 'name' => '田中一郎',
-                'email' => 'tanaka@gmail.com'
+                'email' => 'tanaka@gmail.com',
+                'admin' => false,
             ],
         ];
 
         foreach ($users as $user) {
             DB::table('users')->insert([
-                'user_name' => $user['name'],
+                'name' => $user['name'],
                 'email' => $user['email'],
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'admin' => false,
+                'admin' => $user['admin'],
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
