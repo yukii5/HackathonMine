@@ -22,6 +22,12 @@ Route::get('/project/create', [App\Http\Controllers\ProjectController::class, 'c
 Route::post('/project/create', [App\Http\Controllers\ProjectController::class, 'store'])
 ->middleware('auth')->name('projects.store');
 
+Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
+->middleware('auth')->name('projects.detail');
+
+Route::get('/ticket/{id}', [App\Http\Controllers\ProjectController::class, 'ticket'])
+->middleware('auth')->name('ticket.detail');
+
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');
 
