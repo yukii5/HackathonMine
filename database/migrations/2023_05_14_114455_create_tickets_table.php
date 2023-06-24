@@ -16,10 +16,10 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('ticket_name',20);
+            $table->unsignedBigInteger('responsible_person_id');
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->unsignedBigInteger('status_id');
-            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->string('status_code', 7)->default('active');
             $table->text('comment');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();

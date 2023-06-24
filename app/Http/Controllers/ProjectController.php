@@ -16,9 +16,10 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::join('users', 'projects.responsible_person_id', '=', 'users.id')
-            ->join('statuses', 'projects.status_code', '=', 'statuses.status_code')
-            ->get();
+        $projects = Project::select('projects.id', 'project_name', 'users.name', 'start_date', 'end_date', 'status_name')
+        ->join('users', 'projects.responsible_person_id', '=', 'users.id')
+        ->join('statuses', 'projects.status_code', '=', 'statuses.status_code')
+        ->get();
 
         return view('index')->with('projects', $projects);
     }
@@ -75,9 +76,15 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function detail(Project $project, $id)
     {
-        //
+        $projects = Project::select('projects.id', 'project_name', 'ticket_name', 'comment', 'tickets.start_date', 'tickets.end_date', 'users.name')
+        ->join('tickets', 'projects.id', '=', 'tickets.project_id')
+        ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
+        ->where('projects.id', $id)
+        ->get();
+
+        return view('project.detail')->with('projects', $projects);
     }
 
     /**

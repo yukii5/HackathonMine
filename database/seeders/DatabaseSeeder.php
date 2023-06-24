@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             StatusesTableSeeder::class,
             UsersTableSeeder::class,
             ProjectsTableSeeder::class,
+            TicketsTableSeeder::class,
         ]);
     }
 }

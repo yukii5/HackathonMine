@@ -29,10 +29,9 @@
 
         <div class="table-wrap table-responsive pt-3">
             <div class="text-end mb-3">
-                <p>笹本　健</p>
+                <p>{{ Auth::user()->name }}</p>
                 <div class="pt-1">
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
                         {{ __('ログアウト') }}
                     </a>
@@ -57,9 +56,9 @@
                     @foreach($projects as $project)
                     <tr class="pb-3">
                         <td class="ps-3">
-                            <a href="prj.html">{{ $project->project_name }}</a>
+                            <a href="{{ route('projects.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
                         </td>
-                        <td class="ps-2">{{ $project->user_name }}</td>
+                        <td class="ps-2">{{ $project->name }}</td>
                         <td class="ps-2">{{ \Carbon\Carbon::parse($project->start_date)->format('Y/m/d') }}</td>
                         <td class="ps-2">{{ \Carbon\Carbon::parse($project->end_date)->format('Y/m/d') }}</td>
                         <td class="ps-2">{{ $project->status_name }}</td>
