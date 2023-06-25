@@ -22,7 +22,7 @@
                 <li class="breadcrumb-item active" aria-current="page">新規プロジェクト</li>
             </ol>
         </nav>
-        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('projects.store') }}" method="post">
+        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('project.store') }}" method="post">
             @csrf
             <div class="mb-4">
                 <label for="project_name" class="form-label">プロジェクト名</label>

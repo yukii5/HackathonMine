@@ -18,14 +18,14 @@ Route::get('/', [App\Http\Controllers\ProjectController::class, 'index'])
 ->middleware('auth')->name('projects.index');
 
 Route::get('/project/create', [App\Http\Controllers\ProjectController::class, 'create'])
-->middleware('auth')->name('projects.create');
+->middleware('auth')->name('project.create');
 
-Route::post('/project/create', [App\Http\Controllers\ProjectController::class, 'store'])
-->middleware('auth')->name('projects.store');
+Route::post('/project/store', [App\Http\Controllers\ProjectController::class, 'store'])
+->middleware('auth')->name('project.store');
 
 // プロジェクト詳細　(チケット一覧)
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
-->middleware('auth')->name('projects.detail');
+->middleware('auth')->name('project.detail');
 
 // チケット作成
 Route::get('/project/{id}/ticket/create', [App\Http\Controllers\TicketController::class, 'create'])

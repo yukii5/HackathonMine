@@ -63,7 +63,7 @@ class TicketController extends Controller
             $ticket->users()->attach($data['user_id']);
         }
         
-        return redirect()->route('projects.detail', ['id' => $id]);
+        return redirect()->route('project.detail', ['id' => $id]);
     }
 
     /**

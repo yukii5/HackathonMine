@@ -56,7 +56,7 @@
                     @foreach($projects as $project)
                     <tr class="pb-3">
                         <td class="ps-3">
-                            <a href="{{ route('projects.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
+                            <a href="{{ route('project.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
                         </td>
                         <td class="ps-2">{{ $project->name }}</td>
                         <td class="ps-2">{{ \Carbon\Carbon::parse($project->start_date)->format('Y/m/d') }}</td>
@@ -67,7 +67,7 @@
                 </tbody>
             </table>
         </div>
-        <a class="btn btn-primary px-3" href="/project/create">新規プロジェクト</a>
+        <a class="btn btn-primary px-3" href="{{ route('project.create') }}">新規プロジェクト</a>
     </div>
 </body>
 
