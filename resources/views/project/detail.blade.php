@@ -19,7 +19,7 @@
         <nav class="my-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">TOP</a></li>
-                <li class="breadcrumb-item active" aria-current="page">（株）ABC サイトリニューアル</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $project->project_name }}</li>
             </ol>
         </nav>
         <div class="table-wrap table-responsive pt-3">
@@ -27,14 +27,13 @@
                 <p>笹本　健</p>
                 <p><a href="">ログアウト</a></p>
             </div>
-            <h1 class="mb-5">{{ $projects[0]->project_name }}</h1>
+            <h1 class="mb-5">{{ $project->project_name }}</h1>
 
             <p>チケット一覧</p>
             <table class="table table-condensed">
                 <thead>
                     <tr class="bg-light">
                         <td scope="col">タイトル</td>
-                        <td scope="col">本文</td>
                         <td scope="col">開始日</td>
                         <td scope="col">期日</td>
                         <td scope="col">担当</td>
@@ -42,16 +41,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($projects as $project)
+                    @foreach($tickets as $ticket)
                     <tr class="pb-3">
                         <td class="ps-3">
-                            <a href="ticket.html">{{ $project->ticket_name }}</a>
+                            <a href="ticket.html">{{ $ticket->ticket_name }}</a>
                         </td>
-                        <td class="ps-2">ABCの...</td>
-                        <td class="ps-2">2023/05/01</td>
-                        <td class="ps-2">2023/05/31</td>
-                        <td class="ps-2">笹本 健</td>
-                        <td class="ps-2">完了</td>
+                        <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d') }}</td>
+                        <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d') }}</td>
+                        <td class="ps-2">{{ $ticket->name }}</td>
+                        <td class="ps-2">{{ $ticket->status_name }}</td>
                     </tr>
                     @endforeach
                 </tbody>

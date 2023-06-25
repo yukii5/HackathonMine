@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// TOP （プロジェクト一覧）
 Route::get('/', [App\Http\Controllers\ProjectController::class, 'index'])
 ->middleware('auth')->name('projects.index');
 
@@ -22,9 +23,11 @@ Route::get('/project/create', [App\Http\Controllers\ProjectController::class, 'c
 Route::post('/project/create', [App\Http\Controllers\ProjectController::class, 'store'])
 ->middleware('auth')->name('projects.store');
 
+// プロジェクト詳細　(チケット一覧)
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
 ->middleware('auth')->name('projects.detail');
 
+// チケット詳細
 Route::get('/ticket/{id}', [App\Http\Controllers\ProjectController::class, 'ticket'])
 ->middleware('auth')->name('ticket.detail');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Project\StoreRequest;
@@ -71,20 +72,24 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * プロジェクト詳細画面
+     * チケットの一覧を表示する
      *
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
     public function detail(Project $project, $id)
     {
-        $projects = Project::select('projects.id', 'project_name', 'ticket_name', 'comment', 'tickets.start_date', 'tickets.end_date', 'users.name')
-        ->join('tickets', 'projects.id', '=', 'tickets.project_id')
+        $project = Project::where('id', $id)->first();
+        
+        $tickets = Ticket::where('project_id', $id)
         ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
-        ->where('projects.id', $id)
+        ->join('statuses', 'tickets.status_code', '=', 'statuses.status_code')
         ->get();
-
-        return view('project.detail')->with('projects', $projects);
+        
+        return view('project.detail')
+            ->with('project', $project)
+            ->with('tickets', $tickets);
     }
 
     /**
