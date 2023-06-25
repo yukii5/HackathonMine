@@ -27,6 +27,14 @@ Route::post('/project/create', [App\Http\Controllers\ProjectController::class, '
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
 ->middleware('auth')->name('projects.detail');
 
+// チケット作成
+Route::get('/project/{id}/ticket/create', [App\Http\Controllers\TicketController::class, 'create'])
+->middleware('auth');
+
+Route::post('/project/{id}/ticket/store', [App\Http\Controllers\TicketController::class, 'store'])
+->middleware('auth')->name('ticket.store');
+
+
 // チケット詳細
 Route::get('/ticket/{id}', [App\Http\Controllers\ProjectController::class, 'ticket'])
 ->middleware('auth')->name('ticket.detail');

@@ -20,14 +20,14 @@ class CreateTicketsTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('status_code', 7)->default('active');
-            $table->text('comment');
+            $table->text('content');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->unsignedBigInteger('created_user_id');
             $table->timestamp('updated_at')->nullable();
             $table->unsignedBigInteger('updated_user_id');
-            $table->boolean('del_flg');
+            $table->boolean('del_flg')->default(0);;
         });
     }
 

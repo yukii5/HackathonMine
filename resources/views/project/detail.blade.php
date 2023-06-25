@@ -56,7 +56,7 @@
             </table>
         </div>
         <div>
-            <a class="btn btn-primary px-3" href="ticket_create.html">チケット作成</a>
+            <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>
             <a class="btn btn-secondary px-3" href="/">戻る</a>
         </div>
         <div class="text-end">

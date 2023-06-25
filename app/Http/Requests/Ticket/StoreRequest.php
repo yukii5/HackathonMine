@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Project;
+namespace App\Http\Requests\Ticket;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,17 +24,13 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'project_name' => 'required|string|max:100',
+            'ticket_name' => 'required|string|max:100',
             'responsible_person_id' => 'required|exists:users,id',
+            // 'project_id' => 'required|exists:project,id',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
-            'user_id' => 'nullable|array',
-            'user_id.*' => 'exists:users,id',
+            'content' => 'required|string|max:1000',
+            'user_id.*' => 'exists:users,id'
         ];
     }
-
-    // public function projectName(): string
-    // {
-    //     return $this->input('project_name');
-    // }
 }
