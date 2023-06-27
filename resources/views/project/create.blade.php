@@ -24,6 +24,15 @@
         </nav>
         <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('project.store') }}" method="post">
             @csrf
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <div class="mb-4">
                 <label for="project_name" class="form-label">プロジェクト名</label>
                 <input type="text" name="project_name" class="form-control">
