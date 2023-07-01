@@ -81,12 +81,21 @@ class ProjectController extends Controller
     public function detail(Project $project, $id)
     {
         $project = Project::where('id', $id)->first();
-        
-        $tickets = Ticket::where('project_id', $id)
+
+        $tickets = Ticket::select(
+            'tickets.id', 
+            'ticket_name',
+            'tickets.responsible_person_id',
+            'users.name',
+            'start_date', 
+            'end_date',
+            'statuses.status_name',
+        )
+        ->where('project_id', $id)
         ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
         ->join('statuses', 'tickets.status_code', '=', 'statuses.status_code')
         ->get();
-        
+
         return view('project.detail')
             ->with('project', $project)
             ->with('tickets', $tickets);

@@ -44,7 +44,7 @@
                     @foreach($tickets as $ticket)
                     <tr class="pb-3">
                         <td class="ps-3">
-                            <a href="ticket.html">{{ $ticket->ticket_name }}</a>
+                            <a href="{{ route('ticket.show', ['pid' => $project->id, 'tid' => $ticket->id] ) }}">{{ $ticket->ticket_name }}</a>
                         </td>
                         <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d') }}</td>
                         <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d') }}</td>
