@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Ticket\StoreRequest;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -77,8 +78,11 @@ class TicketController extends Controller
     {
         $project = Project::where('id', $pid)->first();
 
-        $ticket = Ticket::where('id', $tid)->first();
-
+        $ticket = DB::table('tickets')
+            ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
+            ->select('ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person')
+            ->where('tickets.id', $tid)->first();
+        
         $create_user = User::select('users.name AS create_user')
             ->join('tickets', 'users.id', '=', 'tickets.created_user_id')
             ->where('tickets.id', $tid)

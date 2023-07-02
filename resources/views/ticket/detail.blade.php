@@ -29,12 +29,10 @@
                 <p><a href="">ログアウト</a></p>
             </div>
             <p>{{ $project->project_name }}</p>
-            <h1 class="mb-5">{{ $ticket->ticket_name }}</h1>
-            <div class="mb-3">
-                <p>作成日: {{ $start_date_f }}</p>
-                <p>期日　: {{ $end_date_f }}</p>
-                <p>作成者: {{ $create_user }}</p>
-                <p>更新者: {{ $update_user }}</p>
+            <h1 class="mb-3">{{ $ticket->ticket_name }}</h1>
+            <p class="mb-3"><b>担当: {{ $ticket->responsible_person }}</b></p>
+            <div>
+                <p>開始日: {{ $start_date_f }}　期日: {{ $end_date_f }}　作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
             </div>
             <div class="text-bd">
                 {{ $ticket->content }}
