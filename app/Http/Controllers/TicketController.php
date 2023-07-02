@@ -26,12 +26,19 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Project $project, $id)
+    public function create($id)
     {
         $project = Project::where('id', $id)->first();
+
+        $users = User::select('users.id AS user_id', 'users.name AS user_name')
+        ->join('project_user', 'users.id', '=', 'project_user.user_id')
+        ->join('projects', 'project_user.project_id', '=', 'projects.id')
+        ->where('projects.id', $id)->orderBy('users.id')->get();
+
         return view('ticket.create')
             ->with('id', $id)
-            ->with('project', $project);
+            ->with('project', $project)
+            ->with('users', $users);
     }
 
     /**

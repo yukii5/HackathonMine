@@ -44,10 +44,10 @@
                 <label for="responsible" class="form-label pe-2">担当</label>
                 <div>
                     <select name="responsible_person_id" id="responsible" class="form-control">
-                        <option value="0">-</option>
-                        <option value="1">笹本 健</option>
-                        <option value="2">山田太郎</option>
-                        <option value="3">鈴木一郎</option>
+                        <option value="">-</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -68,10 +68,10 @@
                 <label for="user_name" class="form-label pe-2">メンバー</label>
                 <div>
                     <select id="member-select" class="form-control">
-                        <option value="0">-</option>
-                        <option value="1">笹本 健</option>
-                        <option value="2">山田太郎</option>
-                        <option value="3">鈴木一郎</option>
+                        <option value="">-</option>
+                        @foreach($users as $user)
+                        <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
+                        @endforeach
                     </select>
                     <div class="mt-3">
                         <input type="button" onclick="addMember()" value="追加" />
