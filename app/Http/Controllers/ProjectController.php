@@ -80,8 +80,14 @@ class ProjectController extends Controller
      */
     public function detail(Project $project, $id)
     {
+        
         $project = Project::where('id', $id)->first();
-
+        
+        $users = User::select('users.name AS user_name')
+        ->join('project_user', 'users.id', '=', 'project_user.user_id')
+        ->join('projects', 'project_user.project_id', '=', 'projects.id')
+        ->where('projects.id', $id)->orderBy('users.id')->get();
+        
         $tickets = Ticket::select(
             'tickets.id', 
             'ticket_name',
@@ -98,7 +104,8 @@ class ProjectController extends Controller
 
         return view('project.detail')
             ->with('project', $project)
-            ->with('tickets', $tickets);
+            ->with('tickets', $tickets)
+            ->with('users', $users);
     }
 
     /**

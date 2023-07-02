@@ -30,7 +30,7 @@
             <h1 class="mb-5">{{ $project->project_name }}</h1>
 
             <p>チケット一覧</p>
-            <table class="table table-condensed">
+            <table class="mb-5 table table-condensed">
                 <thead>
                     <tr class="bg-light">
                         <td scope="col">タイトル</td>
@@ -54,6 +54,14 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mb-5">
+                <p>プロジェクトメンバー</p>
+                <ul>
+                    @foreach($users as $user)
+                    <li>{{ $user->user_name }}</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
         <div>
             <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>

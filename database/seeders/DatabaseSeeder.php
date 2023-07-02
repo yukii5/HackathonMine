@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             ProjectsTableSeeder::class,
             TicketsTableSeeder::class,
+            ProjectUserTableSeeder::class,
         ]);
     }
 }
