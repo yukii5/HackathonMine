@@ -15,7 +15,7 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $projects = Project::select('projects.id', 'project_name', 'users.name', 'start_date', 'end_date', 'status_name')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
