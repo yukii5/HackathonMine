@@ -36,8 +36,8 @@ Route::post('/project/{id}/ticket/store', [App\Http\Controllers\TicketController
 
 
 // チケット詳細
-Route::get('/ticket/{id}', [App\Http\Controllers\ProjectController::class, 'ticket'])
-->middleware('auth')->name('ticket.detail');
+Route::get('/project/{pid}/ticket/{tid}', [App\Http\Controllers\TicketController::class, 'show'])
+->middleware('auth')->name('ticket.show');
 
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');

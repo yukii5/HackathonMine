@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\ticket;
+use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Ticket\StoreRequest;
 
@@ -69,20 +70,32 @@ class TicketController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ticket  $ticket
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function show(ticket $ticket)
+    public function show(Ticket $ticket, $pid, $tid)
     {
-        /**
-         * 
-         * プロジェクトのメンバー
-SELECT project_name, users.name FROM projects 
-JOIN project_user ON projects.id = project_user.project_id 
-JOIN users ON users.id = project_user.user_id 
-WHERE projects.id = :id
-         */
+        $project = Project::where('id', $pid)->first();
 
+        $ticket = Ticket::where('id', $tid)->first();
+
+        $create_user = User::select('users.name AS create_user')
+            ->join('tickets', 'users.id', '=', 'tickets.created_user_id')
+            ->where('tickets.id', $tid)
+            ->value('create_user');
+        
+        $update_user = User::select('users.name AS update_user')
+            ->join('tickets', 'users.id', '=', 'tickets.updated_user_id')
+            ->where('tickets.id', $tid)
+            ->value('update_user');
+
+        return view('ticket.detail')
+            ->with('project', $project)
+            ->with('ticket', $ticket)
+            ->with('start_date_f', \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d'))
+            ->with('end_date_f', \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d'))
+            ->with('create_user', $create_user)
+            ->with('update_user', $update_user);
     }
 
     /**

@@ -19,12 +19,12 @@
         <nav class="my-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">TOP</a></li>
-                <li class="breadcrumb-item"><a href="/project/{{ $project->id }}">{{ $project->project_name }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('project.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">新規チケット</li>
             </ol>
         </nav>
 
-        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('ticket.store', ['id' => $id]) }}" method="POST">
+        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('ticket.store', ['id' => $project->id]) }}" method="POST">
             @csrf
             @if ($errors->any())
             <div class="alert alert-danger">
