@@ -15,7 +15,7 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('project_name',20);
+            $table->string('project_name',100);
             $table->unsignedBigInteger('responsible_person_id');
             $table->foreign('responsible_person_id')->references('id')->on('users');
             $table->string('status_code', 7)->default('active');

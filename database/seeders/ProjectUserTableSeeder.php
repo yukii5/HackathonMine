@@ -14,7 +14,7 @@ class ProjectUserTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        // 全件削除
         DB::table('project_user')->insert([
             [
                 'project_id' => 1,
@@ -35,6 +35,10 @@ class ProjectUserTableSeeder extends Seeder
             [
                 'project_id' => 2,
                 'user_id' => 1
+            ],
+            [
+                'project_id' => 2,
+                'user_id' => 2
             ],
             [
                 'project_id' => 2,
