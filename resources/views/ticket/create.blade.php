@@ -65,7 +65,7 @@
                 <textarea class="form-control" name="content" id="content" cols="30" rows="10">{{ old('content') }}</textarea>
             </div>
             <div class="mb-4">
-                <label for="user_name" class="form-label pe-2">メンバー</label>
+                <label for="user_name" class="form-label pe-2">要確認メンバー</label>
                 <div>
                     <select id="member-select" class="form-control">
                         <option value="">-</option>
