@@ -40,7 +40,7 @@
             <div class="mb-4">
                 <label for="responsible_person" class="form-label">責任者</label>
                 <select name="responsible_person_id" class="form-select" aria-label="">
-                    <option selected>-</option>
+                    <option selected value="">-</option>
                     @foreach($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
@@ -55,7 +55,7 @@
                 <input type="date" name="end_date" class="form-control">
             </div>
             <div class="mb-4">
-                <label for="start_date" class="form-label">メンバー</label>
+                <label for="start_date" class="form-label">プロジェクトメンバー</label>
                 <div class="mb-3">
                     <input type="checkbox" class="form-check-input" id="select-all">
                     <label for="select-all" class="form-check-label">全て</label>
