@@ -27,8 +27,8 @@
                 <p>笹本　健</p>
                 <p><a href="">ログアウト</a></p>
             </div>
-            <h1 class="mb-5">{{ $project->project_name }}</h1>
-
+            <h1 class="mb-3">{{ $project->project_name }}</h1>
+            <p class="mb-5"><b>責任者: {{ $project->leader }}</b></p>
             <p>チケット一覧</p>
             <table class="mb-5 table table-condensed">
                 <thead>
@@ -58,7 +58,9 @@
                 <p>プロジェクトメンバー</p>
                 <ul>
                     @foreach($users as $user)
-                    <li>{{ $user->user_name }}</li>
+                        @if($user->id != $project->leader_id)
+                        <li>{{ $user->user_name }}</li>
+                        @endif
                     @endforeach
                 </ul>
             </div>

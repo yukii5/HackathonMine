@@ -66,6 +66,11 @@ class ProjectController extends Controller
             $project->users()->attach($data['user_id']);
         }
 
+        // プロジェクトの責任者がプロジェクトメンバーに含まれていない場合は追加する
+        if (!in_array($data['responsible_person_id'], $data['user_id'], true)) {
+            $project->users()->attach($data['responsible_person_id']);
+        }
+        
         // 保存が完了したらリダイレクトなどの適切なレスポンスを返す
         // 例: リダイレクト先のルート名は適宜変更してください
         return redirect()->route('projects.index')->with('success', 'プロジェクトが保存されました');
@@ -80,14 +85,15 @@ class ProjectController extends Controller
      */
     public function detail(Project $project, $id)
     {
-        
-        $project = Project::where('id', $id)->first();
-        
-        $users = User::select('users.name AS user_name')
+        $project = Project::select('projects.id', 'project_name', 'users.id as leader_id','users.name AS leader')
+        ->join('users', 'projects.responsible_person_id', '=', 'users.id')
+        ->where('projects.id', $id)->first();
+
+        $users = User::select('users.id AS id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->join('projects', 'project_user.project_id', '=', 'projects.id')
         ->where('projects.id', $id)->orderBy('users.id')->get();
-        
+
         $tickets = Ticket::select(
             'tickets.id', 
             'ticket_name',
