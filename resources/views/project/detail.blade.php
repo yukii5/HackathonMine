@@ -24,11 +24,22 @@
         </nav>
         <div class="table-wrap table-responsive pt-3">
             <div class="text-end mb-3">
-                <p>笹本　健</p>
-                <p><a href="">ログアウト</a></p>
+                <p>{{ Auth::user()->name }}</p>
+                <div class="pt-1">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        {{ __('ログアウト') }}
+                    </a>
+                </div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
             <h1 class="mb-3">{{ $project->project_name }}</h1>
-            <p class="mb-5"><b>責任者: {{ $project->leader }}</b></p>
+            <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
+            <div class="mb-5">
+                <p>作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
+            </div>
             <p>チケット一覧</p>
             <table class="mb-5 table table-condensed">
                 <thead>
@@ -58,9 +69,12 @@
                 <p>プロジェクトメンバー</p>
                 <ul>
                     @foreach($users as $user)
-                        @if($user->id != $project->leader_id)
-                        <li>{{ $user->user_name }}</li>
+                    <li>
+                        {{ $user->user_name }}
+                        @if($user->id === $project->leader_id)
+                        <span>（責任者）</span>
                         @endif
+                    </li>
                     @endforeach
                 </ul>
             </div>

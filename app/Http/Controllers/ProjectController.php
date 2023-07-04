@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Project\StoreRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -55,9 +56,8 @@ class ProjectController extends Controller
         $project->created_at = date('Y-m-d H:i:s');
         $project->updated_at = date('Y-m-d H:i:s');
         
-        // todo ログイン中のユーザIDに変更する
-        $project->created_user_id = 1;
-        $project->updated_user_id = 1;
+        $project->created_user_id = Auth::user()->id;
+        $project->updated_user_id = Auth::user()->id;
 
         $project->save();
 
@@ -65,10 +65,20 @@ class ProjectController extends Controller
         if (isset($data['user_id'])) {
             $project->users()->attach($data['user_id']);
         }
-
+    
         // プロジェクトの責任者がプロジェクトメンバーに含まれていない場合は追加する
         if (!in_array($data['responsible_person_id'], $data['user_id'], true)) {
             $project->users()->attach($data['responsible_person_id']);
+        }
+
+        /**
+         * 操作ユーザをプロジェクトメンバーに追加
+         * (条件）操作ユーザが 責任者 or プロジェクトメンバー として選択されていない
+         */
+        if ((string)Auth::user()->id !== $data['responsible_person_id'] 
+            && !in_array((string)Auth::user()->id, $data['user_id'], true)
+        ) {
+            $project->users()->attach(Auth::user()->id);
         }
         
         // 保存が完了したらリダイレクトなどの適切なレスポンスを返す
@@ -91,8 +101,15 @@ class ProjectController extends Controller
 
         $users = User::select('users.id AS id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
-        ->join('projects', 'project_user.project_id', '=', 'projects.id')
-        ->where('projects.id', $id)->orderBy('users.id')->get();
+        ->where('project_user.project_id', $id)->orderBy('users.id')->get();
+        
+        $create_user = User::select('users.name AS create_user')
+        ->join('projects', 'projects.created_user_id', '=', 'users.id')
+        ->where('projects.id', $id)->value('create_user');
+
+        $update_user = User::select('users.name AS create_user')
+        ->join('projects', 'projects.updated_user_id', '=', 'users.id')
+        ->where('projects.id', $id)->value('create_user');
 
         $tickets = Ticket::select(
             'tickets.id', 
@@ -111,7 +128,9 @@ class ProjectController extends Controller
         return view('project.detail')
             ->with('project', $project)
             ->with('tickets', $tickets)
-            ->with('users', $users);
+            ->with('users', $users)
+            ->with('create_user', $create_user)
+            ->with('update_user', $update_user);
     }
 
     /**
