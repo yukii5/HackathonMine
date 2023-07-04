@@ -37,8 +37,12 @@
             </div>
             <h1 class="mb-3">{{ $project->project_name }}</h1>
             <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
-            <div class="mb-5">
-                <p>作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
+            <div>
+                <p>作成日 : {{ \Carbon\Carbon::parse($project->created_at)->format('Y/m/d') }}　{{ $create_user }}</p>
+                <p>更新日 : {{ \Carbon\Carbon::parse($project->updated_at)->format('Y/m/d') }}　{{ $update_user }}</p>
+            </div>
+            <div class="text-end mb-5">
+                <a href="">プロジェクト編集</a>
             </div>
             <p>チケット一覧</p>
             <table class="mb-5 table table-condensed">

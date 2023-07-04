@@ -83,7 +83,7 @@ class ProjectController extends Controller
      */
     public function detail(Project $project, $id)
     {
-        $project = Project::select('projects.id', 'project_name', 'users.id as leader_id','users.name AS leader')
+        $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id','users.name AS leader')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
 
