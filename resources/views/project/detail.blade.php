@@ -42,7 +42,7 @@
                 <p>更新日 : {{ \Carbon\Carbon::parse($project->updated_at)->format('Y/m/d') }}　{{ $update_user }}</p>
             </div>
             <div class="text-end mb-5">
-                <a href="">プロジェクト編集</a>
+                <a href="{{ route('project.edit', ['id' => $project->id]) }}">プロジェクト編集</a>
             </div>
             <p>チケット一覧</p>
             <table class="mb-5 table table-condensed">

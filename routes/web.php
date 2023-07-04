@@ -23,6 +23,9 @@ Route::get('/project/create', [App\Http\Controllers\ProjectController::class, 'c
 Route::post('/project/store', [App\Http\Controllers\ProjectController::class, 'store'])
 ->middleware('auth')->name('project.store');
 
+Route::get('/project/{id}/edit', [App\Http\Controllers\ProjectController::class, 'edit'])
+->middleware('auth')->name('project.edit');
+
 // プロジェクト詳細　(チケット一覧)
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
 ->middleware('auth')->name('project.detail');
