@@ -71,16 +71,6 @@ class ProjectController extends Controller
             $project->users()->attach($data['responsible_person_id']);
         }
 
-        /**
-         * 操作ユーザをプロジェクトメンバーに追加
-         * (条件）操作ユーザが 責任者 or プロジェクトメンバー として選択されていない
-         */
-        if ((string)Auth::user()->id !== $data['responsible_person_id'] 
-            && !in_array((string)Auth::user()->id, $data['user_id'], true)
-        ) {
-            $project->users()->attach(Auth::user()->id);
-        }
-        
         // 保存が完了したらリダイレクトなどの適切なレスポンスを返す
         // 例: リダイレクト先のルート名は適宜変更してください
         return redirect()->route('projects.index')->with('success', 'プロジェクトが保存されました');
