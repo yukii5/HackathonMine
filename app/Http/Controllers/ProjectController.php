@@ -18,7 +18,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::select('projects.id', 'project_name', 'users.name', 'start_date', 'end_date', 'status_name')
+        $projects = Project::select('projects.id', 'project_name', 'users.name', 'status_name')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->join('statuses', 'projects.status_code', '=', 'statuses.status_code')
         ->get();
@@ -50,8 +50,6 @@ class ProjectController extends Controller
         $project = new Project();
         $project->project_name = $data['project_name'];
         $project->responsible_person_id = $data['responsible_person_id'];
-        $project->start_date = $data['start_date'];
-        $project->end_date = $data['end_date'];
         
         $project->created_at = date('Y-m-d H:i:s');
         $project->updated_at = date('Y-m-d H:i:s');
@@ -106,8 +104,6 @@ class ProjectController extends Controller
             'ticket_name',
             'tickets.responsible_person_id',
             'users.name',
-            'start_date', 
-            'end_date',
             'statuses.status_name',
         )
         ->where('project_id', $id)

@@ -47,14 +47,6 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label for="start_date" class="form-label">開始日</label>
-                <input type="date" name="start_date" class="form-control">
-            </div>
-            <div class="mb-4">
-                <label for="end_date" class="form-label">期日</label>
-                <input type="date" name="end_date" class="form-control">
-            </div>
-            <div class="mb-4">
                 <label for="start_date" class="form-label">プロジェクトメンバー</label>
                 <div class="mb-3">
                     <input type="checkbox" class="form-check-input" id="select-all">

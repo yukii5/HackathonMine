@@ -26,8 +26,6 @@ class StoreRequest extends FormRequest
         return [
             'project_name' => 'required|string|max:100',
             'responsible_person_id' => 'required|exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
             'user_id' => 'required|array',
             'user_id.*' => 'exists:users,id',
         ];

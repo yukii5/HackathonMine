@@ -47,8 +47,6 @@
                     <tr class="bg-light">
                         <td scope="col">プロジェクト名</td>
                         <td scope="col">責任者</td>
-                        <td scope="col">開始日</td>
-                        <td scope="col">終了日</td>
                         <td scope="col">ステータス</td>
                     </tr>
                 </thead>
@@ -59,8 +57,6 @@
                             <a href="{{ route('project.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
                         </td>
                         <td class="ps-2">{{ $project->name }}</td>
-                        <td class="ps-2">{{ \Carbon\Carbon::parse($project->start_date)->format('Y/m/d') }}</td>
-                        <td class="ps-2">{{ \Carbon\Carbon::parse($project->end_date)->format('Y/m/d') }}</td>
                         <td class="ps-2">{{ $project->status_name }}</td>
                     </tr>
                     @endforeach
