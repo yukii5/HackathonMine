@@ -35,14 +35,16 @@
             @endif
             <div class="mb-4">
                 <label for="project_name" class="form-label">プロジェクト名</label>
-                <input type="text" name="project_name" class="form-control">
+                <input type="text" name="project_name" class="form-control" value="{{ old('project_name') }}">
             </div>
             <div class="mb-4">
                 <label for="responsible_person" class="form-label">責任者</label>
                 <select name="responsible_person_id" class="form-select" aria-label="">
                     <option selected value="">-</option>
                     @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option value="{{ $user->id }}" {{ old('responsible_person_id') == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -54,7 +56,7 @@
                 </div>
                 @foreach($users as $user)
                 <div class="mb-1">
-                    <input type="checkbox" class="form-check-input" name="user_id[]" value="{{ $user->id }}" id="user_{{ $user->id }}">
+                    <input {{ !empty(old('user_id')) && in_array((string)$user->id, old('user_id'), true) ? 'checked' : '' }} type="checkbox" class="form-check-input" name="user_id[]" value="{{ $user->id }}" id="user_{{ $user->id }}">
                     <label for="user_{{ $user->id }}" class="form-check-label">{{ $user->name }}</label>
                 </div>
                 @endforeach
