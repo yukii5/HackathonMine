@@ -143,6 +143,12 @@ return [
         'project_name' => [
             'required' => 'プロジェクト名を入力してください。',
         ],
+        'ticket_name' => [
+            'required' => 'チケット名を入力してください。',
+        ],
+        'content' => [
+            'required' => '本文を入力してください。',
+        ],
     ],
 
     /*
@@ -162,6 +168,9 @@ return [
         'start_date' => '開始日',
         'end_date' => '期日',
         'user_id' => 'プロジェクトメンバー',
+        'ticket_name' => 'チケット名',
+        't_responsible_person_id' => '担当',
+        'user_id.*' => 'メンバー',
     ],
 
 ];

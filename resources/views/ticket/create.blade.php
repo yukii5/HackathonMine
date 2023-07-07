@@ -43,10 +43,12 @@
             <div class="mb-4">
                 <label for="responsible" class="form-label pe-2">担当</label>
                 <div>
-                    <select name="responsible_person_id" id="responsible" class="form-control">
+                    <select name="t_responsible_person_id" id="responsible" class="form-control">
                         <option value="">-</option>
-                        @foreach($users as $user)
-                        <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
+                        @foreach($users as $k => $v)
+                        <option value="{{ $k }}" {{ old('t_responsible_person_id') == $k ? 'selected' : '' }}>
+                            {{ $v }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -69,8 +71,9 @@
                 <div>
                     <select id="member-select" class="form-control">
                         <option value="">-</option>
-                        @foreach($users as $user)
-                        <option value="{{ $user->user_id }}">{{ $user->user_name }}</option>
+                        @foreach($users as $k => $v)
+                        <option @if(in_array($k, $old_user_id)) style="display: none;" @endif value="{{ $k }}">{{ $v }}
+                        </option>
                         @endforeach
                     </select>
                     <div class="mt-3">
@@ -78,7 +81,13 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-4 member-list"></div>
+            <div class="mb-4 member-list">
+                @foreach($old_user_id as $id)
+                <div class="pb-1 member-name"><span><?= $users[$id]; ?></span>
+                    <input type="hidden" name="user_id[]" class="form-control" value="{{ $id }}"><a onclick="deleteMember(this)" class="ps-3" href="javascript:void(0)">削除</a>
+                </div>
+                @endforeach
+            </div>
             <div class="d-flex justify-content-center complete-btn-grp pt-5 mb-5">
                 <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
                 <div><a class="text-light btn btn-secondary me-3" href="/project/{{ $project->id }}"><b>戻る</b></a></div>
@@ -108,7 +117,7 @@
             var memberList = document.getElementsByClassName("member-list")[0];
             var memberNameDiv = document.createElement("div");
             memberNameDiv.className = "pb-1 member-name";
-            memberNameDiv.innerHTML = '<span>' + memberName + '</span><input type="hidden" name="user_id[]" class="form-control" value="' + memberId + '"><a class="ps-3" href="javascript:void(0)">削除</a>';
+            memberNameDiv.innerHTML = '<span>' + memberName + '</span><input type="hidden" name="user_id[]" class="form-control" value="' + memberId + '"><a onclick="deleteMember()" class="ps-3" href="javascript:void(0)">削除</a>';
             memberList.appendChild(memberNameDiv);
 
             // 削除ボタンを押したときの処理
@@ -125,6 +134,25 @@
             // プルダウンをデフォルトにリセットする
             memberSelect.selectedIndex = 0;
         }
+
+        function deleteMember(element) {
+
+            var parentDiv = element.parentNode;
+
+            parentDiv.parentNode.removeChild(parentDiv);
+
+            var deletedValue = parentDiv.querySelector('input[name="user_id[]"]').value;
+
+            var options = document.getElementById('member-select').options;
+            
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].value === deletedValue) {
+                    options[i].style.display = '';
+                    break;
+                }
+            }
+        }
+
 
         // 「全選択」チェックボックスの要素を取得
         var selectAllCheckbox = document.getElementById("select-all");

@@ -28,17 +28,32 @@ class TicketController extends Controller
      */
     public function create($id)
     {
+        $old_user_id = [];
+        
+        $session_data = session()->all();
+
+        // 選択中の要確認メンバー(id)を取得
+        if (isset($session_data["_old_input"])) {
+            
+            if (isset($session_data["_old_input"]["user_id"])) {
+                $old_user_id = $session_data["_old_input"]["user_id"];
+            }
+        }
+
         $project = Project::where('id', $id)->first();
 
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->join('projects', 'project_user.project_id', '=', 'projects.id')
-        ->where('projects.id', $id)->orderBy('users.id')->get();
+        ->where('projects.id', $id)
+            ->orderBy('users.id')
+            ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
 
         return view('ticket.create')
             ->with('id', $id)
             ->with('project', $project)
-            ->with('users', $users);
+            ->with('users', $users)
+            ->with('old_user_id', $old_user_id);
     }
 
     /**
@@ -53,7 +68,7 @@ class TicketController extends Controller
 
         $ticket = new Ticket();
         $ticket->ticket_name = $data['ticket_name'];
-        $ticket->responsible_person_id = $data['responsible_person_id'];
+        $ticket->responsible_person_id = $data['t_responsible_person_id'];
         $ticket->project_id = $id;
         $ticket->content = $data['content'];
         $ticket->start_date = $data['start_date'];
@@ -71,7 +86,7 @@ class TicketController extends Controller
         if (isset($data['user_id'])) {
             $ticket->users()->attach($data['user_id']);
         }
-        
+
         return redirect()->route('project.detail', ['id' => $id]);
     }
 
