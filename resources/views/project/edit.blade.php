@@ -23,7 +23,8 @@
                 <li class="breadcrumb-item active" aria-current="page">（編集）</li>
             </ol>
         </nav>
-        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('project.store') }}" method="post">
+        <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('project.edit.put', ['id' => $project->id]) }}" method="post">
+            @method('PUT')
             @csrf
             @if ($errors->any())
             <div class="alert alert-danger">
@@ -36,14 +37,20 @@
             @endif
             <div class="mb-4">
                 <label for="project_name" class="form-label">プロジェクト名</label>
-                <input type="text" name="project_name" class="form-control">
+                <input type="text" name="project_name" class="form-control" value="@if (old('project_name')){{ old('project_name') }}@else{{ $project->project_name }}@endif">
             </div>
             <div class="mb-4">
                 <label for="responsible_person" class="form-label">責任者</label>
                 <select name="responsible_person_id" class="form-select" aria-label="">
                     <option selected value="">-</option>
                     @foreach($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option @if (empty(old('responsible_person_id')) && $project->leader_id === $user->id)
+                        selected
+                        @elseif (old('responsible_person_id') == $user->id)
+                        selected
+                        @endif value="{{ $user->id }}" >
+                        {{ $user->name }}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -55,7 +62,14 @@
                 </div>
                 @foreach($users as $user)
                 <div class="mb-1">
-                    <input type="checkbox" class="form-check-input" name="user_id[]" value="{{ $user->id }}" id="user_{{ $user->id }}">
+                    @if (!empty(old('user_id')) && in_array($user->id, old('user_id')))
+                    <?php $checked = 'checked'; ?>
+                    @elseif ( empty(old('user_id')) && !empty($p_users) && $p_users->contains($user->id))
+                    <?php $checked = 'checked'; ?>
+                    @else
+                    <?php $checked = ''; ?>
+                    @endif
+                    <input <?= $checked ?> type="checkbox" class="form-check-input" name="user_id[]" value="{{ $user->id }}" id="user_{{ $user->id }}">
                     <label for="user_{{ $user->id }}" class="form-check-label">{{ $user->name }}</label>
                 </div>
                 @endforeach

@@ -127,27 +127,65 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-        $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id', 'users.name AS leader')
+        $project = Project::select(
+                'projects.id', 
+                'project_name', 
+                'projects.created_at AS created_at', 
+                'projects.updated_at AS updated_at', 
+                'users.id as leader_id', 
+                'users.name AS leader'
+            )
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
 
         $users = User::all();
+
+        $p_users = User::select('users.id AS id', 'users.name AS user_name')
+        ->join('project_user', 'users.id', '=', 'project_user.user_id')
+        ->where('project_user.project_id', $id)->orderBy('users.id')->get();
         
         return view('project.edit')
             ->with('project', $project)
-            ->with('users', $users);
+            ->with('users', $users)
+            ->with('p_users', $p_users);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
+     * @param  \App\Http\Requests\Project\StoreRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(StoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        
+        $project = Project::where('id', $request->id())->first();
+
+        $project->project_name = $data['project_name'];
+        $project->responsible_person_id = $data['responsible_person_id'];
+
+        $project->created_at = date('Y-m-d H:i:s');
+        $project->updated_at = date('Y-m-d H:i:s');
+
+        $project->updated_user_id = Auth::user()->id;
+
+        $project->save();
+
+        // プロジェクトメンバーを初期化
+        $project->users()->detach();
+
+        // メンバーの関連付け
+        if (isset($data['user_id'])) {
+            $project->users()->attach($data['user_id']);
+        }
+
+        // プロジェクトの責任者がプロジェクトメンバーに含まれていない場合は追加する
+        if (!in_array($data['responsible_person_id'], $data['user_id'], true)) {
+            $project->users()->attach($data['responsible_person_id']);
+        }
+
+        return redirect()->route('projects.index');
     }
 
     /**

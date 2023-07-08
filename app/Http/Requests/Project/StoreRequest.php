@@ -31,8 +31,8 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    // public function projectName(): string
-    // {
-    //     return $this->input('project_name');
-    // }
+    public function id(): int
+    {
+        return (int) $this->route('id');
+    }
 }
