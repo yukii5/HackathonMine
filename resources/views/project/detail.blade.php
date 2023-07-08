@@ -87,10 +87,15 @@
             <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>
             <a class="btn btn-secondary px-3" href="/">戻る</a>
         </div>
-        <div class="text-end">
+        <div class="d-flex justify-content-end mb-5">
             <button class="btn btn-primary px-3">プロジェクト完了</button>
-            <button class="btn btn-danger px-3">プロジェクト削除</button>
+            <form class="ps-2" action="{{ route('project.delete', ['id' => $project->id]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger px-3">プロジェクト削除</button>
+            </form>
         </div>
+
     </div>
 </body>
 

@@ -29,6 +29,9 @@ Route::get('/project/{id}/edit', [App\Http\Controllers\ProjectController::class,
 Route::put('/project/{id}/edit', [App\Http\Controllers\ProjectController::class, 'update'])
 ->middleware('auth')->name('project.edit.put');
 
+Route::delete('/project/{id}/delete', [App\Http\Controllers\ProjectController::class, 'delete'])
+->middleware('auth')->name('project.delete');
+
 // プロジェクト詳細　(チケット一覧)
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
 ->middleware('auth')->name('project.detail');

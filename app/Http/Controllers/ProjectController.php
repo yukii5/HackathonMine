@@ -191,11 +191,17 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Http\Requests\Project\StoreRequest
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function delete($id)
     {
-        //
+        $project = Project::find($id);
+        
+        $project->users()->detach();
+        
+        $project->delete();
+        
+        return redirect()->route('projects.index');
     }
 }

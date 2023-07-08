@@ -18,7 +18,8 @@ class CreateTicketsTable extends Migration
             $table->string('ticket_name',100);
             $table->unsignedBigInteger('responsible_person_id');
             $table->unsignedBigInteger('project_id');
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')
+            ->onDelete('cascade');
             $table->string('status_code', 7)->default('active');
             $table->text('content');
             $table->timestamp('start_date')->nullable();
