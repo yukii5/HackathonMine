@@ -157,6 +157,8 @@ class TicketController extends Controller
     {
         $ticket = Ticket::find($tid);
 
+        $ticket->users()->detach();
+
         $ticket->delete();
 
         return redirect()->route('project.detail', ['id' => $pid]);
