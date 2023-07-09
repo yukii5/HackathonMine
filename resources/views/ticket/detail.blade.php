@@ -38,7 +38,7 @@
                 {{ $ticket->content }}
             </div>
             <div class="pe-2 text-end">
-                <a href="">編集</a>
+                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
             </div>
         </div>
         <div class="mt-5">

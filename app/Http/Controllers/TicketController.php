@@ -7,7 +7,9 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Ticket\StoreRequest;
+use App\Http\Requests\Ticket\UpdateRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
@@ -124,27 +126,96 @@ class TicketController extends Controller
             ->with('update_user', $update_user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ticket  $ticket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ticket $ticket)
+    public function edit($pid, $tid)
     {
-        //
+        $old_user_id = [];
+        
+        $session_data = session()->all();
+        
+        // 選択中の要確認メンバー(id)を取得
+        if (isset($session_data["_old_input"])) {
+            if (isset($session_data["_old_input"]["user_id"])) {
+                $old_user_id = $session_data["_old_input"]["user_id"];
+            }
+        }
+
+        $project = Project::where('id', $pid)->first();
+        
+        $users = User::select('users.id AS user_id', 'users.name AS user_name')
+        ->join('project_user', 'users.id', '=', 'project_user.user_id')
+        ->join('projects', 'project_user.project_id', '=', 'projects.id')
+        ->where('projects.id', $pid)
+        ->orderBy('users.id')
+        ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
+
+        $ticket = DB::table('tickets')
+        ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
+        ->select(
+            'tickets.id', 
+            'ticket_name', 
+            'content', 
+            'start_date', 
+            'end_date', 
+            'responsible_person_id', 
+            'users.name AS responsible_person',
+            )
+        ->where('tickets.id', $tid)->first();
+
+        $t_users = DB::table('ticket_user')
+        ->join('users', 'ticket_user.user_id', '=', 'users.id')
+        ->join('tickets', 'ticket_user.ticket_id', '=', 'tickets.id')
+        ->select('ticket_user.user_id AS id', 'users.name AS name')
+        ->where('tickets.id', $tid)
+        ->pluck('name', 'id');
+
+        // キーのみの配列に変換
+        $t_user_keys = array_keys($t_users->toArray());
+        
+        return view('ticket.edit')
+            ->with('id', $pid)
+            ->with('project', $project)
+            ->with('users', $users)
+            ->with('ticket', $ticket)
+            ->with('start_date_f', \Carbon\Carbon::parse($ticket->start_date)->format('Y-m-d'))
+            ->with('end_date_f', \Carbon\Carbon::parse($ticket->end_date)->format('Y-m-d'))
+            ->with('old_user_id', $old_user_id)
+            ->with('t_users', $t_users)
+            ->with('t_user_keys', $t_user_keys);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ticket  $ticket
+     * Show the form for editing the specified resource.
+     * 
+     * @param  \App\Http\Requests\Ticket\UpdateRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ticket $ticket)
+    public function update(UpdateRequest $request, $pid, $tid)
     {
-        //
+        $data = $request->validated();
+
+        $ticket = Ticket::where('id', $tid)->first();
+        
+        $ticket->ticket_name = $data['ticket_name'];
+        $ticket->responsible_person_id = $data['t_responsible_person_id'];
+        // $ticket->project_id = $id;
+        $ticket->content = $data['content'];
+        $ticket->start_date = $data['start_date'];
+        $ticket->end_date = $data['end_date'];
+
+        $ticket->updated_at = date('Y-m-d H:i:s');
+
+        $ticket->updated_user_id = Auth::user()->id;
+
+        $ticket->save();
+        
+        // （関連）要確認メンバーの初期化
+        $ticket->users()->detach();
+        
+        if (isset($data['user_id'])) {
+            $ticket->users()->attach($data['user_id']);
+        }
+        
+        return redirect()->route('project.detail', ['id' => $pid]);
     }
 
     /**

@@ -50,6 +50,12 @@ Route::get('/project/{pid}/ticket/{tid}', [App\Http\Controllers\TicketController
 Route::delete('/project/{pid}/ticket/{tid}/delete', [App\Http\Controllers\TicketController::class, 'delete'])
 ->middleware('auth')->name('ticket.delete');
 
+Route::get('/project/{pid}/ticket/{tid}/edit', [App\Http\Controllers\TicketController::class, 'edit'])
+->middleware('auth')->name('ticket.edit');
+
+Route::put('/project/{pid}/ticket/{tid}/edit', [App\Http\Controllers\TicketController::class, 'update'])
+->middleware('auth')->name('ticket.edit.put');
+
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');
 
