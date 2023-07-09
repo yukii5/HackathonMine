@@ -67,10 +67,14 @@
         <div class="mt-5 mb-3">
             <a class="btn btn-secondary px-3" href="prj.html">戻る</a>
         </div>
-        <div class="text-end mb-5">
+        <div class="d-flex justify-content-end mb-5">
             <button class="btn btn-primary px-3">チケットを完了にする</button>
             <button class="btn btn-primary px-3">実施中に戻す</button>
-            <button class="btn btn-danger px-3">チケットを削除する</button>
+            <form class="ps-2" action="{{ route('ticket.delete', ['pid' => $project->id, 'tid' => $ticket->id]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger px-3">チケットを削除する</button>
+            </form>
         </div>
     </div>
 

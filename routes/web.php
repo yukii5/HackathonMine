@@ -43,10 +43,12 @@ Route::get('/project/{id}/ticket/create', [App\Http\Controllers\TicketController
 Route::post('/project/{id}/ticket/store', [App\Http\Controllers\TicketController::class, 'store'])
 ->middleware('auth')->name('ticket.store');
 
-
 // チケット詳細
 Route::get('/project/{pid}/ticket/{tid}', [App\Http\Controllers\TicketController::class, 'show'])
 ->middleware('auth')->name('ticket.show');
+
+Route::delete('/project/{pid}/ticket/{tid}/delete', [App\Http\Controllers\TicketController::class, 'delete'])
+->middleware('auth')->name('ticket.delete');
 
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');

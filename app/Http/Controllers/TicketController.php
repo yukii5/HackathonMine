@@ -102,7 +102,7 @@ class TicketController extends Controller
 
         $ticket = DB::table('tickets')
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
-            ->select('ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person')
+            ->select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person')
             ->where('tickets.id', $tid)->first();
         
         $create_user = User::select('users.name AS create_user')
@@ -150,11 +150,15 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ticket  $ticket
+     * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ticket $ticket)
+    public function delete($pid, $tid)
     {
-        //
+        $ticket = Ticket::find($tid);
+
+        $ticket->delete();
+
+        return redirect()->route('project.detail', ['id' => $pid]);
     }
 }
