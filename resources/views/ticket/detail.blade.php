@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="mt-5 mb-3">
-            <a class="btn btn-secondary px-3" href="prj.html">戻る</a>
+            <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
         </div>
         <div class="d-flex justify-content-end mb-5">
             <button class="btn btn-primary px-3">チケットを完了にする</button>
