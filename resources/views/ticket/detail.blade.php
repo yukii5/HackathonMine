@@ -34,16 +34,13 @@
             <div>
                 <p>開始日: {{ $start_date_f }}　期日: {{ $end_date_f }}　作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
             </div>
-            <div class="text-bd">
+            <div class="text-bd mb-3">
                 {{ $ticket->content }}
             </div>
+            <div class="pe-2 text-end">
+                <a href="">編集</a>
+            </div>
         </div>
-        <div class="mt-3">
-
-            <a class="btn btn-primary px-3" href="ticket_create.html">編集</a>
-            <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
-        </div>
-
         <div class="mt-5">
             <p class="mb-3"><b>コメント</b></p>
             <div class="comment-wrapper">
@@ -67,7 +64,9 @@
                 </div>
             </div>
         </div>
-
+        <div class="mt-5 mb-3">
+            <a class="btn btn-secondary px-3" href="prj.html">戻る</a>
+        </div>
         <div class="text-end mb-5">
             <button class="btn btn-primary px-3">チケットを完了にする</button>
             <button class="btn btn-primary px-3">実施中に戻す</button>
