@@ -67,9 +67,9 @@
         <div class="mb-5">
                 <p>要確認 : </p>
                 <ul>
-                    <li>dummy</li>
-                    <li>dummy</li>
-                    <li>dummy</li>
+                    @foreach($t_users as $id => $name)
+                    <li>{{ $name }}</li>
+                    @endforeach
                 </ul>
             </div>
         <div class="mt-5 mb-3">

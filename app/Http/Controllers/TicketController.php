@@ -106,6 +106,13 @@ class TicketController extends Controller
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
             ->select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person')
             ->where('tickets.id', $tid)->first();
+
+        $t_users = DB::table('ticket_user')
+            ->join('users', 'ticket_user.user_id', '=', 'users.id')
+            ->join('tickets', 'ticket_user.ticket_id', '=', 'tickets.id')
+            ->select('ticket_user.user_id AS id', 'users.name AS name')
+            ->where('tickets.id', $tid)
+            ->pluck('name', 'id');
         
         $create_user = User::select('users.name AS create_user')
             ->join('tickets', 'users.id', '=', 'tickets.created_user_id')
@@ -122,6 +129,7 @@ class TicketController extends Controller
             ->with('ticket', $ticket)
             ->with('start_date_f', \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d'))
             ->with('end_date_f', \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d'))
+            ->with('t_users', $t_users)
             ->with('create_user', $create_user)
             ->with('update_user', $update_user);
     }
