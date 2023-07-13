@@ -41,7 +41,7 @@
                 <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
             </div>
         </div>
-        <div class="mt-5">
+        <div class="mt-3">
             <p class="mb-3"><b>コメント</b></p>
             <div class="comment-wrapper">
                 <p>
@@ -57,13 +57,21 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-5">
                 <textarea class="mb-3 form-control" name="" id="" cols="20" rows="3"></textarea>
                 <div class="mb-3">
                     <a class="btn btn-primary px-3" href="ticket_create.html">追加</a>
                 </div>
             </div>
         </div>
+        <div class="mb-5">
+                <p>要確認 : </p>
+                <ul>
+                    <li>dummy</li>
+                    <li>dummy</li>
+                    <li>dummy</li>
+                </ul>
+            </div>
         <div class="mt-5 mb-3">
             <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
         </div>
