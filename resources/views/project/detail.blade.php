@@ -37,11 +37,24 @@
             </div>
             <h1 class="mb-3">{{ $project->project_name }}</h1>
             <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
-            <div>
+            <div class="mb-3">
                 <p>作成日 : {{ \Carbon\Carbon::parse($project->created_at)->format('Y/m/d') }}　{{ $create_user }}</p>
                 <p>更新日 : {{ \Carbon\Carbon::parse($project->updated_at)->format('Y/m/d') }}　{{ $update_user }}</p>
             </div>
-            <div class="text-end mb-5">
+            <div class="mb-3">
+                <p>プロジェクトメンバー</p>
+                <ul>
+                    @foreach($users as $user)
+                    <li>
+                        {{ $user->user_name }}
+                        @if($user->id === $project->leader_id)
+                        <span>（責任者）</span>
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="text-end mb-3">
                 <a href="{{ route('project.edit', ['id' => $project->id]) }}">プロジェクト編集</a>
             </div>
             <p>チケット一覧</p>
@@ -69,19 +82,6 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mb-5">
-                <p>プロジェクトメンバー</p>
-                <ul>
-                    @foreach($users as $user)
-                    <li>
-                        {{ $user->user_name }}
-                        @if($user->id === $project->leader_id)
-                        <span>（責任者）</span>
-                        @endif
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
         </div>
         <div>
             <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>
