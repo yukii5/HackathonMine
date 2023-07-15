@@ -16,6 +16,7 @@ class Project extends Model
         'responsible_person_id',
         'start_date',
         'end_date',
+        'status_code'
     ];
 
     public function users()

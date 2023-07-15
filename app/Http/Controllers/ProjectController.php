@@ -83,7 +83,7 @@ class ProjectController extends Controller
      */
     public function detail(Project $project, $id)
     {
-        $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id','users.name AS leader')
+        $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id','users.name AS leader', 'projects.status_code AS status')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
 
@@ -184,6 +184,40 @@ class ProjectController extends Controller
         if (!in_array($data['responsible_person_id'], $data['user_id'], true)) {
             $project->users()->attach($data['responsible_person_id']);
         }
+
+        return redirect()->route('projects.index');
+    }
+
+    /**
+     * プロジェクトのステータスを完了にする
+     *
+     * @param  \App\Http\Requests\Project\StoreRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function done($id)
+    {
+        $project = Project::where('id', $id)->first();
+
+        $project->status_code = 'done';
+
+        $project->save();
+
+        return redirect()->route('projects.index');
+    }
+
+    /**
+     * プロジェクトのステータスを進行中に戻す
+     *
+     * @param  \App\Http\Requests\Project\StoreRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function active($id)
+    {
+        $project = Project::where('id', $id)->first();
+
+        $project->status_code = 'active';
+
+        $project->save();
 
         return redirect()->route('projects.index');
     }

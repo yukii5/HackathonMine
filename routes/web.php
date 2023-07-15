@@ -36,6 +36,14 @@ Route::delete('/project/{id}/delete', [App\Http\Controllers\ProjectController::c
 Route::get('/project/{id}', [App\Http\Controllers\ProjectController::class, 'detail'])
 ->middleware('auth')->name('project.detail');
 
+// プロジェクト終了
+Route::put('/project/{id}/done', [App\Http\Controllers\ProjectController::class, 'done'])
+->middleware('auth')->name('project.done');
+
+// プロジェクト進行中に戻す
+Route::put('/project/{id}/active', [App\Http\Controllers\ProjectController::class, 'active'])
+->middleware('auth')->name('project.active');
+
 // チケット作成
 Route::get('/project/{id}/ticket/create', [App\Http\Controllers\TicketController::class, 'create'])
 ->middleware('auth');
