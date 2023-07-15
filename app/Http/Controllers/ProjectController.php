@@ -188,37 +188,25 @@ class ProjectController extends Controller
     }
 
     /**
-     * プロジェクトのステータスを完了にする
+     * プロジェクトのステータスを更新
      *
-     * @param  \App\Http\Requests\Project\StoreRequest
+     * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function done($id)
+    public function status(Request $request, $id)
     {
         $project = Project::where('id', $id)->first();
 
-        $project->status_code = 'done';
+        if ($request->input('t-status') != '') {
+            $project->status_code = $request->input('t-status') == 0 ? 'done' : 'active';
+        }
 
         $project->save();
 
-        return redirect()->route('projects.index');
-    }
-
-    /**
-     * プロジェクトのステータスを進行中に戻す
-     *
-     * @param  \App\Http\Requests\Project\StoreRequest
-     * @return \Illuminate\Http\Response
-     */
-    public function active($id)
-    {
-        $project = Project::where('id', $id)->first();
-
-        $project->status_code = 'active';
-
-        $project->save();
-
-        return redirect()->route('projects.index');
+        if ($project->status_code == 'done') {
+            return redirect()->route('projects.index');
+        }
+        return redirect()->route('project.detail', ['id' => $id]);
     }
 
     /**

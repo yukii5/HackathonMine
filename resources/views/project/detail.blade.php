@@ -88,19 +88,17 @@
             <a class="btn btn-secondary px-3" href="/">戻る</a>
         </div>
         <div class="d-flex justify-content-end mb-5">
-            @if ($project->status == 'active')
-            <form class="ps-2" action="{{ route('project.done', ['id' => $project->id]) }}" method="post">
+            <form class="ps-2" action="{{ route('project.status', ['id' => $project->id]) }}" method="post">
                 @csrf
                 @method('put')
+                @if ($project->status == 'active')
                 <button class="btn btn-primary px-3">終了</button>
-            </form>
-            @else
-            <form class="ps-2" action="{{ route('project.active', ['id' => $project->id]) }}" method="post">
-                @csrf
-                @method('put')
+                <input type="hidden" name="t-status" value="0">
+                @else
                 <button class="btn btn-primary px-3">進行中に戻す</button>
+                <input type="hidden" name="t-status" value="1">
+                @endif
             </form>
-            @endif
             <form class="ps-2" action="{{ route('project.delete', ['id' => $project->id]) }}" method="post">
                 @csrf
                 @method('delete')
