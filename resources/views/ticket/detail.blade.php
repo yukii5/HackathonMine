@@ -52,7 +52,7 @@
             <div class="mb-1 ps-2">
                 <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
             </div>
-            <div class="text-bd mb-3">
+            <div class="t-content text-bd mb-3">
                 {{ $ticket->content }}
             </div>
         </div>
