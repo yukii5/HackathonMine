@@ -104,10 +104,13 @@ class ProjectController extends Controller
             'tickets.responsible_person_id',
             'users.name',
             'statuses.status_name',
+            'start_date',
+            'end_date',
         )
         ->where('project_id', $id)
         ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
         ->join('statuses', 'tickets.status_code', '=', 'statuses.status_code')
+        ->orderBy('end_date', 'asc')
         ->get();
 
         return view('project.detail')
