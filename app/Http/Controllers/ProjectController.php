@@ -18,9 +18,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::select('projects.id', 'project_name', 'users.name', 'status_name')
+        $projects = Project::select('projects.id', 'project_name', 'users.name', 'status_code')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
-        ->join('statuses', 'projects.status_code', '=', 'statuses.status_code')
         ->get();
 
         return view('index')->with('projects', $projects);

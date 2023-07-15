@@ -57,7 +57,7 @@
                             <a href="{{ route('project.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
                         </td>
                         <td class="ps-2">{{ $project->name }}</td>
-                        <td class="ps-2">{{ $project->status_name }}</td>
+                        <td class="ps-2">@if ($project->status_code === 'active')進行中@else終了@endif</td>
                     </tr>
                     @endforeach
                 </tbody>
