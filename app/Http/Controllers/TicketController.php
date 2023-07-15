@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Http\Requests\Ticket\StoreRequest;
 use App\Http\Requests\Ticket\UpdateRequest;
+use App\Http\Requests\Ticket\StatusRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,7 +106,7 @@ class TicketController extends Controller
 
         $ticket = DB::table('tickets')
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
-            ->select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person')
+            ->select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person', 'status_code')
             ->where('tickets.id', $tid)->first();
 
         $t_users = DB::table('ticket_user')
@@ -124,6 +126,9 @@ class TicketController extends Controller
             ->where('tickets.id', $tid)
             ->value('update_user');
 
+        $statuses = Status::select('status_code', 'status_name')
+            ->pluck('status_name', 'status_code');
+
         return view('ticket.detail')
             ->with('project', $project)
             ->with('ticket', $ticket)
@@ -131,7 +136,8 @@ class TicketController extends Controller
             ->with('end_date_f', \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d'))
             ->with('t_users', $t_users)
             ->with('create_user', $create_user)
-            ->with('update_user', $update_user);
+            ->with('update_user', $update_user)
+            ->with('statuses', $statuses);
     }
 
     public function edit($pid, $tid)
@@ -224,6 +230,23 @@ class TicketController extends Controller
         }
         
         return redirect()->route('project.detail', ['id' => $pid]);
+    }
+
+    public function status(StatusRequest $request, $pid, $tid)
+    {
+        $data = $request->validated();
+
+        $ticket = Ticket::where('id', $tid)->first();
+
+        $ticket->status_code = $data['t-status'];
+
+        $ticket->save();
+
+        if ($ticket->status_code === 'done') {
+            return redirect()->route('project.detail', ['id' => $pid]);
+        }
+
+        return redirect()->route('ticket.show', ['pid' => $pid, 'tid' => $tid] );
     }
 
     /**

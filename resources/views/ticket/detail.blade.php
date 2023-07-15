@@ -34,15 +34,16 @@
             <div>
                 <p>開始日: {{ $start_date_f }}　期日: {{ $end_date_f }}　作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
             </div>
-                        
-            <form class="t-status mb-4">
-                <label for="responsible" class="form-label pe-2">ステータス : </label>
-                
+
+            <form action="{{ route('ticket.status', ['pid' => $project->id, 'tid' => $ticket->id]) }}" class="t-status mb-4" method="post">
+                @csrf
+                @method('put')
+                <label for="t-status" class="form-label pe-2">ステータス : </label>
                 <div class="d-flex justify-content-end">
-                    <select name="responsible" id="responsible" class="me-2 form-control">
-                        <option value="1">未対応</option>
-                        <option value="2">対応中</option>
-                        <option value="3">完了</option>
+                    <select name="t-status" id="t-status" class="me-2 form-control">
+                        @foreach($statuses as $code => $name)
+                            <option @if ($ticket->status_code == $code) selected @endif value="{{$code}}">{{$name}}</option>
+                        @endforeach
                     </select>
                     <div>
                     <button class="btn btn-primary px-3" type="submit">更新</button>
