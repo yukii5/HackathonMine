@@ -34,11 +34,26 @@
             <div>
                 <p>開始日: {{ $start_date_f }}　期日: {{ $end_date_f }}　作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
             </div>
+                        
+            <form class="t-status mb-4">
+                <label for="responsible" class="form-label pe-2">ステータス : </label>
+                
+                <div class="d-flex justify-content-end">
+                    <select name="responsible" id="responsible" class="me-2 form-control">
+                        <option value="1">未対応</option>
+                        <option value="2">対応中</option>
+                        <option value="3">完了</option>
+                    </select>
+                    <div>
+                    <button class="btn btn-primary px-3" type="submit">更新</button>
+                    </div>
+                </div>
+            </form>
+            <div class="mb-1 ps-2">
+                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
+            </div>
             <div class="text-bd mb-3">
                 {{ $ticket->content }}
-            </div>
-            <div class="pe-2 text-end">
-                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
             </div>
         </div>
         <div class="mt-3">
@@ -71,18 +86,18 @@
                     <li>{{ $name }}</li>
                     @endforeach
                 </ul>
-            </div>
-        <div class="mt-5 mb-3">
-            <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
         </div>
+
         <div class="d-flex justify-content-end mb-5">
-            <button class="btn btn-primary px-3">チケットを完了にする</button>
-            <button class="btn btn-primary px-3">実施中に戻す</button>
             <form class="ps-2" action="{{ route('ticket.delete', ['pid' => $project->id, 'tid' => $ticket->id]) }}" method="post">
                 @csrf
                 @method('delete')
                 <button type="submit" class="btn btn-danger px-3">チケットを削除する</button>
             </form>
+        </div>
+
+        <div class="mt-5 mb-5">
+            <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
         </div>
     </div>
 

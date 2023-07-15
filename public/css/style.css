@@ -98,6 +98,15 @@ a.pdf-link {
     border-radius: 0.25rem;
 }
 
+.t-status {
+    max-width: 180px;
+    margin: 0 0 0 auto;
+}
+
+.t-status button {
+    width: 66px;
+}
+
 @media screen and (min-width: 640px) {
     .entry-form {
         margin: 0 auto 100px;
