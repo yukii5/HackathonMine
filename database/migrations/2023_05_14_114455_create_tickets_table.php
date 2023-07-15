@@ -20,7 +20,7 @@ class CreateTicketsTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('id')->on('projects')
             ->onDelete('cascade');
-            $table->string('status_code', 7)->default('active');
+            $table->string('status_code', 15)->default('not-started');
             $table->text('content');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();

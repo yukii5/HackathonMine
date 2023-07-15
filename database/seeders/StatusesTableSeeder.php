@@ -17,14 +17,19 @@ class StatusesTableSeeder extends Seeder
         // 初期データの配列
         $statuses = [
             [
-                'status_code' => 'active',
-                'status_name' => '実施中',
+                'status_code' => 'not-started',
+                'status_name' => '未対応',
                 'sort' => 1,
             ],
             [
-                'status_code' => 'done',
-                'status_name' => '完了済み',
+                'status_code' => 'active',
+                'status_name' => '対応中',
                 'sort' => 2,
+            ],
+            [
+                'status_code' => 'done',
+                'status_name' => '完了',
+                'sort' => 3,
             ],
         ];
 

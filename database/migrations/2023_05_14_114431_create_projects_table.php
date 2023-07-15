@@ -18,7 +18,7 @@ class CreateProjectsTable extends Migration
             $table->string('project_name',100);
             $table->unsignedBigInteger('responsible_person_id');
             $table->foreign('responsible_person_id')->references('id')->on('users');
-            $table->string('status_code', 7)->default('active');
+            $table->string('status_code', 15)->default('active');
                 // $table->foreign('status_code')->references('status_code')->on('statuses');
             $table->timestamp('created_at')->nullable();
             $table->unsignedBigInteger('created_user_id');
