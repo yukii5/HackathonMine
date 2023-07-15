@@ -187,7 +187,7 @@ class ProjectController extends Controller
             $project->users()->attach($data['responsible_person_id']);
         }
 
-        return redirect()->route('projects.index');
+        return redirect()->route('project.detail', ['id' => $project->id]);
     }
 
     /**
