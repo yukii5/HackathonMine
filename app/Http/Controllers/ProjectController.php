@@ -82,11 +82,22 @@ class ProjectController extends Controller
      * @param String $id
      * @return \Illuminate\Http\Response
      */
-    public function detail(Request $request, Project $project, $id)
+    public function detail(Request $request, $id)
     {
-        $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id','users.name AS leader', 'projects.status_code AS status')
+        $project = Project::select(
+            'projects.id', 
+            'project_name', 
+            'projects.created_at AS created_at', 
+            'projects.created_user_id AS created_user_id', 
+            'projects.updated_at AS updated_at', 
+            'users.id as leader_id',
+            'users.name AS leader', 
+            'projects.status_code AS status'
+            )
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
+        
+        $this->authorize('view', $project);
 
         $users = User::select('users.id AS id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
@@ -152,12 +163,15 @@ class ProjectController extends Controller
                 'projects.id', 
                 'project_name', 
                 'projects.created_at AS created_at', 
+                'projects.created_user_id AS created_user_id', 
                 'projects.updated_at AS updated_at', 
                 'users.id as leader_id', 
                 'users.name AS leader'
             )
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
+        
+        $this->authorize('view', $project);
 
         $users = User::all();
 
@@ -182,6 +196,8 @@ class ProjectController extends Controller
         $data = $request->validated();
         
         $project = Project::where('id', $request->id())->first();
+        
+        $this->authorize('view', $project);
 
         $project->project_name = $data['project_name'];
         $project->responsible_person_id = $data['responsible_person_id'];
@@ -218,6 +234,8 @@ class ProjectController extends Controller
     public function status(Request $request, $id)
     {
         $project = Project::where('id', $id)->first();
+        
+        $this->authorize('view', $project);
 
         if ($request->input('p-status') != '') {
             $project->status_code = $request->input('p-status') == 0 ? 'done' : 'active';
@@ -241,6 +259,8 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
         
+        $this->authorize('view', $project);
+
         $project->users()->detach();
         
         $project->delete();

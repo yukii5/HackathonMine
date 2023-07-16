@@ -45,7 +45,9 @@ class TicketController extends Controller
         }
 
         $project = Project::where('id', $id)->first();
-
+        
+        $this->authorize('view', $project);
+        
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->join('projects', 'project_user.project_id', '=', 'projects.id')
@@ -68,6 +70,10 @@ class TicketController extends Controller
      */
     public function store(StoreRequest $request, $id)
     {
+        $project = Project::where('id', $id)->first();
+        
+        $this->authorize('view', $project);
+
         $data = $request->validated();
 
         $ticket = new Ticket();
@@ -103,6 +109,8 @@ class TicketController extends Controller
     public function show(Ticket $ticket, $pid, $tid)
     {
         $project = Project::where('id', $pid)->first();
+        
+        $this->authorize('view', $project);
 
         $ticket = DB::table('tickets')
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
@@ -155,6 +163,8 @@ class TicketController extends Controller
 
         $project = Project::where('id', $pid)->first();
         
+        $this->authorize('view', $project);
+
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->where('project_user.project_id', $pid)
@@ -204,6 +214,10 @@ class TicketController extends Controller
      */
     public function update(UpdateRequest $request, $pid, $tid)
     {
+        $project = Project::where('id', $pid)->first();
+        
+        $this->authorize('view', $project);
+
         $data = $request->validated();
 
         $ticket = Ticket::where('id', $tid)->first();
@@ -233,6 +247,10 @@ class TicketController extends Controller
 
     public function status(StatusRequest $request, $pid, $tid)
     {
+        $project = Project::where('id', $pid)->first();
+        
+        $this->authorize('view', $project);
+
         $data = $request->validated();
 
         $ticket = Ticket::where('id', $tid)->first();
@@ -256,6 +274,10 @@ class TicketController extends Controller
      */
     public function delete($pid, $tid)
     {
+        $project = Project::where('id', $pid)->first();
+        
+        $this->authorize('view', $project);
+        
         $ticket = Ticket::find($tid);
 
         $ticket->users()->detach();
