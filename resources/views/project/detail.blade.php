@@ -57,7 +57,36 @@
             <div class="text-end mb-3">
                 <a href="{{ route('project.edit', ['id' => $project->id]) }}">プロジェクト編集</a>
             </div>
-            <p>チケット一覧</p>
+            <form action="{{ request()->fullUrl() }}" class="t-list-search mb-4">
+                
+                <div class="d-flex justify-content-end align-items-center">
+                    
+                    <label for="responsible">担当</label>
+                    <div class="ms-1">
+                        <select name="responsible" id="responsible" class="me-2 form-control">
+                            <option value="all">全て</option>
+                            <option @if (request()->input('responsible') == Auth::user()->id) selected @endif value="{{ Auth::user()->id }}">自分</option>
+                        </select>
+                    </div>
+                    
+                    <div class="ms-3">
+                        <label for="">ステータス</label>
+                    </div>
+                    <div class="ms-1">
+                        <select name="t-status" id="t-status" class="me-2 form-control">
+                            <option value="all">全て</option>
+                            @foreach($statuses as $code => $name)
+                            <option @if (request()->input('t-status') == $code) selected @endif value="{{ $code }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="ms-3">
+                        <button class="btn btn-primary px-3" type="submit">再表示</button>
+                    </div>
+                </div>
+            </form>
+            
             <table class="mb-5 table table-condensed">
                 <thead>
                     <tr class="bg-light">
@@ -93,10 +122,10 @@
                 @method('put')
                 @if ($project->status == 'active')
                 <button class="btn btn-primary px-3">終了</button>
-                <input type="hidden" name="t-status" value="0">
+                <input type="hidden" name="p-status" value="0">
                 @else
                 <button class="btn btn-primary px-3">進行中に戻す</button>
-                <input type="hidden" name="t-status" value="1">
+                <input type="hidden" name="p-status" value="1">
                 @endif
             </form>
             <form class="ps-2" action="{{ route('project.delete', ['id' => $project->id]) }}" method="post">

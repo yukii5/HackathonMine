@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Http\Requests\Project\StoreRequest;
 use Illuminate\Support\Facades\Auth;
@@ -76,11 +77,12 @@ class ProjectController extends Controller
     /**
      * プロジェクト詳細画面
      * チケットの一覧を表示する
-     *
+     * @param \Illuminate\Http\Request $request
      * @param  \App\Models\Project  $project
+     * @param String $id
      * @return \Illuminate\Http\Response
      */
-    public function detail(Project $project, $id)
+    public function detail(Request $request, Project $project, $id)
     {
         $project = Project::select('projects.id', 'project_name', 'projects.created_at AS created_at', 'projects.updated_at AS updated_at', 'users.id as leader_id','users.name AS leader', 'projects.status_code AS status')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
@@ -98,7 +100,7 @@ class ProjectController extends Controller
         ->join('projects', 'projects.updated_user_id', '=', 'users.id')
         ->where('projects.id', $id)->value('create_user');
 
-        $tickets = Ticket::select(
+        $ticketsQ = Ticket::select(
             'tickets.id', 
             'ticket_name',
             'tickets.responsible_person_id',
@@ -110,15 +112,32 @@ class ProjectController extends Controller
         ->where('project_id', $id)
         ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
         ->join('statuses', 'tickets.status_code', '=', 'statuses.status_code')
-        ->orderBy('end_date', 'asc')
-        ->get();
+        ->orderBy('end_date', 'asc');
+        
+        $t_status = $request->input('t-status');
+        
+        $ticketsQ->when(!empty($t_status) && $t_status !== "all" , function($q) use($t_status) {
+            return $q->where('statuses.status_code', $t_status);
+        });
+        
+        $responsible = $request->input('responsible');
+
+        $ticketsQ->when(!empty($responsible) && $responsible !== "all" , function($q) use($responsible) {
+            return $q->where('tickets.responsible_person_id', $responsible);
+        });
+
+        $tickets = $ticketsQ->get();
+        
+        $statuses = Status::select('status_code', 'status_name')
+            ->pluck('status_name', 'status_code');
 
         return view('project.detail')
             ->with('project', $project)
             ->with('tickets', $tickets)
             ->with('users', $users)
             ->with('create_user', $create_user)
-            ->with('update_user', $update_user);
+            ->with('update_user', $update_user)
+            ->with('statuses', $statuses);
     }
 
     /**
@@ -200,8 +219,8 @@ class ProjectController extends Controller
     {
         $project = Project::where('id', $id)->first();
 
-        if ($request->input('t-status') != '') {
-            $project->status_code = $request->input('t-status') == 0 ? 'done' : 'active';
+        if ($request->input('p-status') != '') {
+            $project->status_code = $request->input('p-status') == 0 ? 'done' : 'active';
         }
 
         $project->save();
