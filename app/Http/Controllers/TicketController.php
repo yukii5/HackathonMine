@@ -157,8 +157,7 @@ class TicketController extends Controller
         
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
-        ->join('projects', 'project_user.project_id', '=', 'projects.id')
-        ->where('projects.id', $pid)
+        ->where('project_user.project_id', $pid)
         ->orderBy('users.id')
         ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
 
@@ -229,7 +228,7 @@ class TicketController extends Controller
             $ticket->users()->attach($data['user_id']);
         }
         
-        return redirect()->route('project.detail', ['id' => $pid]);
+        return redirect()->route('ticket.show', ['pid' => $pid, 'tid' => $tid] );
     }
 
     public function status(StatusRequest $request, $pid, $tid)
