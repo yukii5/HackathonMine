@@ -25,8 +25,16 @@
         </nav>
         <div class="table-wrap table-responsive pt-3">
             <div class="text-end mb-3">
-                <p>笹本　健</p>
-                <p><a href="">ログアウト</a></p>
+                <p>{{ Auth::user()->name }}</p>
+                <div class="pt-1">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        {{ __('ログアウト') }}
+                    </a>
+                </div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
             <p>{{ $project->project_name }}</p>
             <h1 class="mb-3">{{ $ticket->ticket_name }}</h1>
