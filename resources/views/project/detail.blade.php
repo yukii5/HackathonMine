@@ -54,9 +54,11 @@
                     @endforeach
                 </ul>
             </div>
+            @if ($project->hasPolicy())
             <div class="text-end mb-3">
                 <a href="{{ route('project.edit', ['id' => $project->id]) }}">プロジェクト編集</a>
             </div>
+            @endif
             <form action="{{ request()->fullUrl() }}" class="t-list-search mb-4">
                 
                 <div class="d-flex justify-content-end align-items-center">
@@ -116,6 +118,7 @@
             <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>
             <a class="btn btn-secondary px-3" href="/">戻る</a>
         </div>
+        @if ($project->hasPolicy())
         <div class="d-flex justify-content-end mb-5">
             <form class="ps-2" action="{{ route('project.status', ['id' => $project->id]) }}" method="post">
                 @csrf
@@ -134,6 +137,7 @@
                 <button type="submit" class="btn btn-danger px-3">プロジェクト削除</button>
             </form>
         </div>
+        @endif
 
     </div>
 </body>
