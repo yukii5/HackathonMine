@@ -16,7 +16,8 @@ class CreateTicketUserTable extends Migration
         Schema::create('ticket_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ticket_id');
-            $table->foreign('ticket_id')->references('id')->on('tickets');
+            $table->foreign('ticket_id')->references('id')->on('tickets')       
+            ->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
         });
