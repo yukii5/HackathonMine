@@ -171,7 +171,7 @@ class ProjectController extends Controller
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
         
-        $this->authorize('view', $project);
+        $this->authorize('update', $project);
 
         $users = User::all();
 
@@ -197,7 +197,7 @@ class ProjectController extends Controller
         
         $project = Project::where('id', $request->id())->first();
         
-        $this->authorize('view', $project);
+        $this->authorize('update', $project);
 
         $project->project_name = $data['project_name'];
         $project->responsible_person_id = $data['responsible_person_id'];
@@ -235,7 +235,7 @@ class ProjectController extends Controller
     {
         $project = Project::where('id', $id)->first();
         
-        $this->authorize('view', $project);
+        $this->authorize('status', $project);
 
         if ($request->input('p-status') != '') {
             $project->status_code = $request->input('p-status') == 0 ? 'done' : 'active';
@@ -259,7 +259,7 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
         
-        $this->authorize('view', $project);
+        $this->authorize('delete', $project);
 
         $project->users()->detach();
         

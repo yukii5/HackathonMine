@@ -49,7 +49,9 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * 管理者
+     * プロジェクト責任者　leader_id
+     * プロジェクト作成者
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Project  $project
@@ -57,11 +59,15 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        //
+        return $user->admin 
+        || $project->leader_id === $user->id
+        || $project->created_user_id === $user->id;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * 管理者
+     * プロジェクト責任者　responsible_person_id
+     * プロジェクト作成者
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Project  $project
@@ -69,7 +75,25 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        //
+        return $user->admin 
+        || $project->responsible_person_id === $user->id
+        || $project->created_user_id === $user->id;
+    }
+
+    /**
+     * 管理者
+     * プロジェクト責任者　responsible_person_id
+     * プロジェクト作成者
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function status(User $user, Project $project)
+    {
+        return $user->admin 
+        || $project->responsible_person_id === $user->id
+        || $project->created_user_id === $user->id;
     }
 
     /**
