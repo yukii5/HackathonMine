@@ -38,25 +38,25 @@ class TicketsTableSeeder extends Seeder
 
         Ticket::create([
             'ticket_name' => 'Ticket 3',
-            'responsible_person_id' => 1,
+            'responsible_person_id' => 2,
             'project_id' => 2,
             'content' => 'This is ticket 3',
             'start_date' => now(),
             'end_date' => null,
-            'created_user_id' => 1,
-            'updated_user_id' => 1,
+            'created_user_id' => 2,
+            'updated_user_id' => 2,
             'del_flg' => false,
         ]); 
 
         Ticket::create([
             'ticket_name' => 'Ticket 4',
-            'responsible_person_id' => 1,
+            'responsible_person_id' => 2,
             'project_id' => 2,
             'content' => 'This is ticket 4',
             'start_date' => now(),
             'end_date' => null,
-            'created_user_id' => 1,
-            'updated_user_id' => 1,
+            'created_user_id' => 2,
+            'updated_user_id' => 2,
             'del_flg' => false,
         ]); 
     }

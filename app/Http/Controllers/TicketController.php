@@ -87,9 +87,8 @@ class TicketController extends Controller
         $ticket->created_at = date('Y-m-d H:i:s');
         $ticket->updated_at = date('Y-m-d H:i:s');
 
-        // todo ログイン中のユーザIDに変更する
-        $ticket->created_user_id = 1;
-        $ticket->updated_user_id = 1;
+        $ticket->created_user_id = Auth::user()->id;
+        $ticket->updated_user_id = Auth::user()->id;
 
         $ticket->save();
 
@@ -163,16 +162,13 @@ class TicketController extends Controller
 
         $project = Project::where('id', $pid)->first();
         
-        $this->authorize('view', $project);
-
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->where('project_user.project_id', $pid)
         ->orderBy('users.id')
         ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
 
-        $ticket = DB::table('tickets')
-        ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
+        $ticket = Ticket::join('users', 'tickets.responsible_person_id', '=', 'users.id')
         ->select(
             'tickets.id', 
             'ticket_name', 
@@ -180,9 +176,13 @@ class TicketController extends Controller
             'start_date', 
             'end_date', 
             'responsible_person_id', 
-            'users.name AS responsible_person',
+            'created_user_id',
+            'users.name AS responsible_person'
             )
-        ->where('tickets.id', $tid)->first();
+        ->where('tickets.id', $tid)
+        ->first();
+
+        $this->authorize('update', $ticket);
 
         $t_users = DB::table('ticket_user')
         ->join('users', 'ticket_user.user_id', '=', 'users.id')
@@ -222,6 +222,8 @@ class TicketController extends Controller
 
         $ticket = Ticket::where('id', $tid)->first();
         
+        $this->authorize('update', $ticket);
+
         $ticket->ticket_name = $data['ticket_name'];
         $ticket->responsible_person_id = $data['t_responsible_person_id'];
         // $ticket->project_id = $id;
@@ -274,11 +276,9 @@ class TicketController extends Controller
      */
     public function delete($pid, $tid)
     {
-        $project = Project::where('id', $pid)->first();
-        
-        $this->authorize('view', $project);
-        
         $ticket = Ticket::find($tid);
+        
+        $this->authorize('delete', $ticket);
 
         $ticket->users()->detach();
 
