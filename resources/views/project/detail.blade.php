@@ -36,13 +36,18 @@
                 </form>
             </div>
             <h1 class="mb-3">{{ $project->project_name }}</h1>
-            <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
-            <div class="mb-3">
-                <p>作成日 : {{ \Carbon\Carbon::parse($project->created_at)->format('Y/m/d') }}　{{ $create_user }}</p>
-                <p>更新日 : {{ \Carbon\Carbon::parse($project->updated_at)->format('Y/m/d') }}　{{ $update_user }}</p>
+            
+            <div class="created-updated">
+                <ul>
+                    <li>作成日 : {{ \Carbon\Carbon::parse($project->created_at)->format('Y/m/d') }}　{{ $create_user }}</li>
+                    <li class="pt-1">更新日 : {{ \Carbon\Carbon::parse($project->updated_at)->format('Y/m/d') }}　{{ $update_user }}</li>
+                </ul>
             </div>
+
+            <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
+
             <div class="mb-3">
-                <p>プロジェクトメンバー</p>
+                <p>メンバー</p>
                 <ul>
                     @foreach($users as $user)
                     <li>
@@ -55,8 +60,8 @@
                 </ul>
             </div>
             @if ($project->hasPolicy())
-            <div class="text-end mb-3">
-                <a href="{{ route('project.edit', ['id' => $project->id]) }}">プロジェクト編集</a>
+            <div class="text-end mb-5">
+                <a href="{{ route('project.edit', ['id' => $project->id]) }}">編集</a>
             </div>
             @endif
             <form action="{{ request()->fullUrl() }}" class="t-list-search mb-4">
@@ -116,7 +121,6 @@
         </div>
         <div>
             <a class="btn btn-primary px-3" href="/{{ request()->path() }}/ticket/create">チケット作成</a>
-            <a class="btn btn-secondary px-3" href="/">戻る</a>
         </div>
         @if ($project->hasPolicy())
         <div class="d-flex justify-content-end mb-5">
@@ -124,7 +128,7 @@
                 @csrf
                 @method('put')
                 @if ($project->status == 'active')
-                <button class="btn btn-primary px-3">終了</button>
+                <button class="btn btn-secondary px-3">終了</button>
                 <input type="hidden" name="p-status" value="0">
                 @else
                 <button class="btn btn-primary px-3">進行中に戻す</button>
@@ -134,11 +138,13 @@
             <form class="ps-2" action="{{ route('project.delete', ['id' => $project->id]) }}" method="post">
                 @csrf
                 @method('delete')
-                <button type="submit" class="btn btn-danger px-3">プロジェクト削除</button>
+                <button type="submit" class="btn btn-danger px-3">削除</button>
             </form>
         </div>
         @endif
-
+        <div class="mt-5 mb-5">
+            <a class="btn btn-secondary px-3" href="/">戻る</a>
+        </div>
     </div>
 </body>
 
