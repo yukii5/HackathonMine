@@ -111,9 +111,8 @@ class TicketController extends Controller
         
         $this->authorize('view', $project);
 
-        $ticket = DB::table('tickets')
+        $ticket = Ticket::select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person', 'responsible_person_id', 'created_user_id', 'project_id', 'status_code')
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
-            ->select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person', 'status_code')
             ->where('tickets.id', $tid)->first();
 
         $t_users = DB::table('ticket_user')

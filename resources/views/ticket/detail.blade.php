@@ -58,9 +58,11 @@
                     </div>
                 </div>
             </form>
+            @if ($ticket->hasUpdatePolicy())
             <div class="mb-1 ps-2">
                 <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
             </div>
+            @endif
             <div class="t-content text-bd mb-3">
                 {{ $ticket->content }}
             </div>
@@ -96,7 +98,7 @@
                     @endforeach
                 </ul>
         </div>
-
+        @if ($ticket->hasDeletePolicy())
         <div class="d-flex justify-content-end mb-5">
             <form class="ps-2" action="{{ route('ticket.delete', ['pid' => $project->id, 'tid' => $ticket->id]) }}" method="post">
                 @csrf
@@ -104,7 +106,7 @@
                 <button type="submit" class="btn btn-danger px-3">チケットを削除する</button>
             </form>
         </div>
-
+        @endif
         <div class="mt-5 mb-5">
             <a class="btn btn-secondary px-3" href="{{ route('project.detail', ['id' => $project->id]) }}">戻る</a>
         </div>
