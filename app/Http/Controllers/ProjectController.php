@@ -165,10 +165,8 @@ class ProjectController extends Controller
                 'projects.created_at AS created_at', 
                 'projects.created_user_id AS created_user_id', 
                 'projects.updated_at AS updated_at', 
-                'users.id as leader_id', 
-                'users.name AS leader'
+                'projects.responsible_person_id'
             )
-        ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->where('projects.id', $id)->first();
         
         $this->authorize('update', $project);

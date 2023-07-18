@@ -44,7 +44,7 @@
                 <select name="responsible_person_id" class="form-select" aria-label="">
                     <option selected value="">-</option>
                     @foreach($users as $user)
-                    <option @if (empty(old('responsible_person_id')) && $project->leader_id === $user->id)
+                    <option @if (empty(old('responsible_person_id')) && $project->responsible_person_id === $user->id)
                         selected
                         @elseif (old('responsible_person_id') == $user->id)
                         selected

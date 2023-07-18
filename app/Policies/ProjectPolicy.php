@@ -50,7 +50,7 @@ class ProjectPolicy
 
     /**
      * 管理者
-     * プロジェクト責任者　leader_id
+     * プロジェクト責任者
      * プロジェクト作成者
      *
      * @param  \App\Models\User  $user
@@ -60,7 +60,7 @@ class ProjectPolicy
     public function update(User $user, Project $project)
     {
         return $user->admin 
-        || $project->leader_id === $user->id
+        || $project->responsible_person_id === $user->id
         || $project->created_user_id === $user->id;
     }
 
