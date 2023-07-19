@@ -36,17 +36,19 @@
                     @csrf
                 </form>
             </div>
-            <p>{{ $project->project_name }}</p>
             <h1 class="mb-3">{{ $ticket->ticket_name }}</h1>
             <p class="mb-3"><b>担当: {{ $ticket->responsible_person }}</b></p>
-            <div>
-                <p>開始日: {{ $start_date_f }}　期日: {{ $end_date_f }}　作成者: {{ $create_user }}　更新者: {{ $update_user }}</p>
+            <div class="mb-5 created-updated">
+                <ul>
+                    <li>開始日: {{ $start_date_f }}</li>
+                    <li class="pt-1">期日　: {{ $end_date_f }}</li>
+                    <li class="pt-3">作成者: {{ $create_user }}</li>
+                    <li class="pt-1">更新者: {{ $update_user }}</li>
+                </ul>
             </div>
-
             <form action="{{ route('ticket.status', ['pid' => $project->id, 'tid' => $ticket->id]) }}" class="t-status mb-4" method="post">
                 @csrf
                 @method('put')
-                <label for="t-status" class="form-label pe-2">ステータス : </label>
                 <div class="d-flex justify-content-end">
                     <select name="t-status" id="t-status" class="me-2 form-control">
                         @foreach($statuses as $code => $name)
@@ -58,14 +60,14 @@
                     </div>
                 </div>
             </form>
-            @if ($ticket->hasUpdatePolicy())
-            <div class="mb-1 ps-2">
-                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
-            </div>
-            @endif
             <div class="t-content text-bd mb-3">
                 {{ $ticket->content }}
             </div>
+            @if ($ticket->hasUpdatePolicy())
+            <div class="text-end mb-5">
+                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
+            </div>
+            @endif
         </div>
         <div class="mt-3">
             <p class="mb-3"><b>コメント</b></p>

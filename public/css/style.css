@@ -109,6 +109,7 @@ a.pdf-link {
 
 .t-content {
     border: none;
+    min-height: 200px;
 }
 
 .t-list-search {
