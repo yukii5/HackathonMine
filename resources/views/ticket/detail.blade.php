@@ -42,8 +42,8 @@
                 <ul>
                     <li>開始日: {{ $start_date_f }}</li>
                     <li class="pt-1">期日　: {{ $end_date_f }}</li>
-                    <li class="pt-3">作成者: {{ $create_user }}</li>
-                    <li class="pt-1">更新者: {{ $update_user }}</li>
+                    <!-- <li class="pt-3">作成者: {{ $create_user }}</li> -->
+                    <!-- <li class="pt-1">更新者: {{ $update_user }}</li> -->
                 </ul>
             </div>
             <form action="{{ route('ticket.status', ['pid' => $project->id, 'tid' => $ticket->id]) }}" class="t-status mb-4" method="post">
@@ -63,6 +63,12 @@
             <div class="t-content text-bd mb-3">
                 {{ $ticket->content }}
             </div>
+            
+            <div class="ps-3 text-black-50">
+                <p>作成日: {{ $created_at }}　{{ $create_user }}</p>
+                <p >更新日: {{ $updated_at }}　{{ $update_user }}</p>
+            </div>
+
             @if ($ticket->hasUpdatePolicy())
             <div class="text-end mb-5">
                 <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
@@ -74,7 +80,7 @@
             <div class="comment-wrapper">
                 <p>
                     山田太郎
-                    <span class="ps-3">2023/06/03 8:00</span>
+                    <span class="text-black-50 ps-3">2023/06/03 8:00</span>
                     <a class="" href="">削除</a>
                 </p>
 

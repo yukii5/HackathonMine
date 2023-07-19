@@ -111,7 +111,20 @@ class TicketController extends Controller
         
         $this->authorize('view', $project);
 
-        $ticket = Ticket::select('tickets.id', 'ticket_name', 'content', 'start_date', 'end_date', 'users.name AS responsible_person', 'responsible_person_id', 'created_user_id', 'project_id', 'status_code')
+        $ticket = Ticket::select(
+            'tickets.id', 
+            'ticket_name', 
+            'content', 
+            'start_date', 
+            'end_date', 
+            'users.name AS responsible_person', 
+            'responsible_person_id', 
+            'created_user_id', 
+            'project_id', 
+            'status_code',
+            'tickets.created_at',
+            'tickets.updated_at',
+            )
             ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
             ->where('tickets.id', $tid)->first();
 
@@ -140,6 +153,8 @@ class TicketController extends Controller
             ->with('ticket', $ticket)
             ->with('start_date_f', \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d'))
             ->with('end_date_f', \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d'))
+            ->with('created_at', \Carbon\Carbon::parse($ticket->created_at)->format('Y/m/d'))
+            ->with('updated_at', \Carbon\Carbon::parse($ticket->updated_at)->format('Y/m/d'))
             ->with('t_users', $t_users)
             ->with('create_user', $create_user)
             ->with('update_user', $update_user)
