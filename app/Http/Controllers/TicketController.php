@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Status;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\Ticket\StoreRequest;
 use App\Http\Requests\Ticket\UpdateRequest;
@@ -148,6 +149,16 @@ class TicketController extends Controller
         $statuses = Status::select('status_code', 'status_name')
             ->pluck('status_name', 'status_code');
 
+        $comments = Comment::select(
+            'name',
+            'comments.user_id AS user_id',
+            'comments.created_at',
+            'comment'
+            )
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->where('ticket_id', $tid)
+            ->orderBy('comments.created_at', 'ASC')->get();
+
         return view('ticket.detail')
             ->with('project', $project)
             ->with('ticket', $ticket)
@@ -158,7 +169,8 @@ class TicketController extends Controller
             ->with('t_users', $t_users)
             ->with('create_user', $create_user)
             ->with('update_user', $update_user)
-            ->with('statuses', $statuses);
+            ->with('statuses', $statuses)
+            ->with('comments', $comments);
     }
 
     public function edit($pid, $tid)

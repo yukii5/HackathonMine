@@ -51,6 +51,10 @@ Route::post('/project/{id}/ticket/store', [App\Http\Controllers\TicketController
 Route::get('/project/{pid}/ticket/{tid}', [App\Http\Controllers\TicketController::class, 'show'])
 ->middleware('auth')->name('ticket.show');
 
+// チケットにコメント
+Route::post('/project/{pid}/ticket/{tid}', [App\Http\Controllers\CommentController::class, 'store'])
+->middleware('auth')->name('ticket.show');
+
 // チケット ステータス更新
 Route::put('/project/{pid}/ticket/{tid}/status', [App\Http\Controllers\TicketController::class, 'status'])
 ->middleware('auth')->name('ticket.status');

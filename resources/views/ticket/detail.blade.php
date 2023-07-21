@@ -42,8 +42,6 @@
                 <ul>
                     <li>開始日: {{ $start_date_f }}</li>
                     <li class="pt-1">期日　: {{ $end_date_f }}</li>
-                    <!-- <li class="pt-3">作成者: {{ $create_user }}</li> -->
-                    <!-- <li class="pt-1">更新者: {{ $update_user }}</li> -->
                 </ul>
             </div>
             <form action="{{ route('ticket.status', ['pid' => $project->id, 'tid' => $ticket->id]) }}" class="t-status mb-4" method="post">
@@ -77,26 +75,41 @@
         </div>
         <div class="mt-3">
             <p class="mb-3"><b>コメント</b></p>
+            @foreach ($comments as $comment)
             <div class="comment-wrapper">
                 <p>
-                    山田太郎
-                    <span class="text-black-50 ps-3">2023/06/03 8:00</span>
+                    {{ $comment->name }}
+                    <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
+                    @if ($comment->user_id == Auth::user()->id)
                     <a class="" href="">削除</a>
+                    @endif
                 </p>
 
-                <textarea readonly class="comment mb-3 form-control" name="" id="" cols="20" rows="3">コメントコメントコメントコメントコメントコメントコメントコメント</textarea>
+                <textarea readonly class="comment mb-3 form-control" name="" id="" cols="20" rows="3">{{$comment->comment}}</textarea>
+                @if ($comment->user_id == Auth::user()->id)
                 <div class="mb-3">
                     <button style="display:none;" class="comment-save btn btn-primary px-3">保存</button>
                     <button class="comment-edit btn btn-primary px-3">編集</button>
                 </div>
+                @endif
             </div>
-
-            <div class="mb-5">
-                <textarea class="mb-3 form-control" name="" id="" cols="20" rows="3"></textarea>
-                <div class="mb-3">
-                    <a class="btn btn-primary px-3" href="ticket_create.html">追加</a>
+            @endforeach
+            <form class="mb-5" action="" method="post">
+                @csrf
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li class="_error-msg">{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            </div>
+                @endif
+                <textarea class="mb-3 form-control" name="comment" id="" cols="20" rows="3">{{ old('comment') }}</textarea>
+                <div class="mb-3">
+                    <button class="btn btn-primary px-3" type="submit">追加</button>
+                </div>
+            </form>
         </div>
         <div class="mb-5">
                 <p>要確認 : </p>
@@ -158,6 +171,47 @@
                 });
             });
         });
+
+        window.onload = function() {
+            // エラーがあればスクロール
+            scrollToError();
+        };
+        
+        function scrollToError() {
+            // エラーメッセージが含まれる要素を取得
+            var errorElements = document.getElementsByClassName('_error-msg');
+            
+            if (errorElements.length > 0) {
+                // 最初のエラーメッセージが含まれる要素を取得
+                var firstErrorElement = errorElements[0];
+                
+                // 親要素を取得
+                var parentElement = firstErrorElement.parentElement;
+
+                // 親要素があればスクロール
+                if (parentElement) {
+                    // 親要素までの位置を取得
+                    var parentPosition = getElementPosition(parentElement);
+
+                    // スクロール位置を調整（例えば、エラーメッセージの上部が見えるようにスクロール）
+                    var scrollOffset = parentPosition - 50;
+
+                    // スクロール実行
+                    window.scrollTo({
+                        top: scrollOffset,
+                        behavior: 'smooth' // スムーズスクロールするためにsmoothを指定
+                    });
+                }
+            }
+        }
+
+        // 要素の絶対位置を取得する関数
+        function getElementPosition(element) {
+            var rect = element.getBoundingClientRect();
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            return rect.top + scrollTop;
+        }
     </script>
 </body>
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\comment;
 use Illuminate\Http\Request;
+use App\Http\Requests\Comment\StoreRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -30,12 +32,22 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Comment\StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, $pid, $tid)
     {
-        //
+        $data = $request->validated();
+        
+        $comment = new Comment;
+
+        $comment->ticket_id = $tid;
+        $comment->user_id = Auth::user()->id;
+        $comment->comment = $data['comment'];
+
+        $comment->save();
+
+        return redirect()->route('ticket.show', ['pid' => $pid, 'tid' => $tid] );
     }
 
     /**

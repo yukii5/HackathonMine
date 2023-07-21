@@ -149,6 +149,17 @@ return [
         'content' => [
             'required' => '本文を入力してください。',
         ],
+        
+        /**
+         * 反映されないため、message()に定義
+         * app/Http/Requests/Comment/StoreRequest.php
+         */
+        // 'comment' => [
+        //     'required' => 'コメントを入力してください。',
+        // ],
+        'comment' => [
+            'max' => 'コメントは、:max文字以下で入力してください。',
+        ],
     ],
 
     /*
@@ -171,6 +182,7 @@ return [
         'ticket_name' => 'チケット名',
         't_responsible_person_id' => '担当',
         'user_id.*' => 'メンバー',
+        'comment' => 'コメント',
     ],
 
 ];
