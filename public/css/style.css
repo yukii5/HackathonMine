@@ -127,6 +127,22 @@ a.pdf-link {
     list-style: none;
 }
 
+.comments {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.comment-wrapper, .comment-add-wrapper {
+    max-width: 860px;
+}
+
+.comment-add-wrapper {
+    margin-top: 80px;
+}
+
+.t-del-btn {
+    max-width: 860px;
+}
 @media screen and (min-width: 640px) {
     .entry-form {
         margin: 0 auto 100px;

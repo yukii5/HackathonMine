@@ -61,22 +61,20 @@
             <div class="t-content text-bd mb-3">
                 {{ $ticket->content }}
             </div>
-            
+            @if ($ticket->hasUpdatePolicy())
+            <div class="text-end">
+                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
+            </div>
+            @endif
             <div class="ps-3 text-black-50">
                 <p>作成日: {{ $created_at }}　{{ $create_user }}</p>
                 <p >更新日: {{ $updated_at }}　{{ $update_user }}</p>
             </div>
-
-            @if ($ticket->hasUpdatePolicy())
-            <div class="text-end mb-5">
-                <a href="{{ route('ticket.edit', ['pid' => $project->id, 'tid' => $ticket->id]) }}">編集</a>
-            </div>
-            @endif
         </div>
-        <div class="mt-3">
+        <div class="mt-5 comments">
             <p class="mb-3"><b>コメント</b></p>
             @foreach ($comments as $comment)
-            <div class="comment-wrapper">
+            <div class="comment-wrapper mt-5">
                 <p>
                     {{ $comment->name }}
                     <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
@@ -85,16 +83,17 @@
                     @endif
                 </p>
 
-                <textarea readonly class="comment mb-3 form-control" name="" id="" cols="20" rows="3">{{$comment->comment}}</textarea>
+                <textarea readonly class="comment mb-2 form-control" name="" id="" cols="20" rows="3">{{$comment->comment}}</textarea>
                 @if ($comment->user_id == Auth::user()->id)
-                <div class="mb-3">
+                <div class="text-end mb-3">
                     <button style="display:none;" class="comment-save btn btn-primary px-3">保存</button>
-                    <button class="comment-edit btn btn-primary px-3">編集</button>
+                    <button class="comment-edit btn btn-secondary px-3">編集</button>
                 </div>
                 @endif
             </div>
             @endforeach
-            <form class="mb-5" action="" method="post">
+            
+            <form class="comment-add-wrapper" action="" method="post">
                 @csrf
                 @if ($errors->any())
                 <div class="alert alert-danger">
@@ -105,8 +104,8 @@
                     </ul>
                 </div>
                 @endif
-                <textarea class="mb-3 form-control" name="comment" id="" cols="20" rows="3">{{ old('comment') }}</textarea>
-                <div class="mb-3">
+                <textarea class="comment mb-2 form-control" name="comment" id="" cols="20" rows="3">{{ old('comment') }}</textarea>
+                <div class="mb-3 text-end">
                     <button class="btn btn-primary px-3" type="submit">追加</button>
                 </div>
             </form>
@@ -120,7 +119,7 @@
                 </ul>
         </div>
         @if ($ticket->hasDeletePolicy())
-        <div class="d-flex justify-content-end mb-5">
+        <div class="t-del-btn d-flex justify-content-end mb-5">
             <form class="ps-2" action="{{ route('ticket.delete', ['pid' => $project->id, 'tid' => $ticket->id]) }}" method="post">
                 @csrf
                 @method('delete')
@@ -146,7 +145,7 @@
                         element.readOnly = false;
                     });
                     commentEditBtn[index].style.display = 'none';
-                    commentSaveBtn[index].style.display = 'block';
+                    commentSaveBtn[index].style.display = 'inline-block';
                 });
             });
 
@@ -157,7 +156,7 @@
                         element.readOnly = true;
                     });
                     commentSaveBtn[index].style.display = 'none';
-                    commentEditBtn[index].style.display = 'block';
+                    commentEditBtn[index].style.display = 'inline-block';
                 });
             });
         });
