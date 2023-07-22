@@ -74,7 +74,7 @@
         <div class="mt-5 comments">
             <p class="mb-3"><b>コメント</b></p>
             @foreach ($comments as $comment)
-            <div class="comment-wrapper mt-5">
+            <div class="comment-wrapper mt-4 @if($loop->last) border-none @endif">
                 <p>
                     {{ $comment->name }}
                     <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
@@ -83,7 +83,7 @@
                     @endif
                 </p>
 
-                <textarea readonly class="comment mb-2 form-control" name="" id="" cols="20" rows="3">{{$comment->comment}}</textarea>
+                <textarea readonly class="comment mb-2 form-control auto-resize-textarea">{{$comment->comment}}</textarea>
                 @if ($comment->user_id == Auth::user()->id)
                 <div class="text-end mb-3">
                     <button style="display:none;" class="comment-save btn btn-primary px-3">保存</button>
@@ -94,6 +94,7 @@
             @endforeach
             
             <form class="comment-add-wrapper" action="" method="post">
+                <p>コメントを追加</p>
                 @csrf
                 @if ($errors->any())
                 <div class="alert alert-danger">
@@ -104,7 +105,7 @@
                     </ul>
                 </div>
                 @endif
-                <textarea class="comment mb-2 form-control" name="comment" id="" cols="20" rows="3">{{ old('comment') }}</textarea>
+                <textarea class="comment mb-2 form-control auto-resize-textarea" name="comment" id="" cols="20" rows="3">{{ old('comment') }}</textarea>
                 <div class="mb-3 text-end">
                     <button class="btn btn-primary px-3" type="submit">追加</button>
                 </div>
@@ -211,6 +212,26 @@
             var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             return rect.top + scrollTop;
         }
+
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // 投稿されたコメントの文字数に合わせてテキストエリアの高さを調整する
+        window.addEventListener('load', function() {
+            const autoResizeTextareas = document.querySelectorAll('.auto-resize-textarea');
+            autoResizeTextareas.forEach(textarea => autoResizeTextarea(textarea));
+        });
+
+        // 新たに追加するコメントの文字数に合わせてテキストエリアの高さを調整する
+        const autoResizeTextareas = document.querySelectorAll('.auto-resize-textarea');
+        
+        autoResizeTextareas.forEach(textarea => {
+            textarea.addEventListener('input', function() {
+            autoResizeTextarea(textarea);
+            });
+        });
     </script>
 </body>
 
