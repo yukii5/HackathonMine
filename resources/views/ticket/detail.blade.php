@@ -135,29 +135,38 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const comment = document.querySelectorAll('.comment');
-            const commentEditBtn = document.querySelectorAll('.comment-edit');
-            const commentSaveBtn = document.querySelectorAll('.comment-save');
+
+            const commentEditBtns = document.querySelectorAll('.comment-edit');
+            const commentSaveBtns= document.querySelectorAll('.comment-save');
 
             // コメント 編集ボタン
-            commentEditBtn.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    comment.forEach(element => {
-                        element.readOnly = false;
-                    });
-                    commentEditBtn[index].style.display = 'none';
-                    commentSaveBtn[index].style.display = 'inline-block';
+            commentEditBtns.forEach((editBtn) => {
+                editBtn.addEventListener('click', () => {
+                    
+                    const parentWrapper = editBtn.closest('.comment-wrapper');
+                    const commentTextarea = parentWrapper.querySelector('.comment');
+                    commentTextarea.readOnly = false;
+
+                    editBtn.style.display = 'none';
+
+                    const commentSaveBtn = parentWrapper.querySelector('.comment-save');
+                    commentSaveBtn.style.display = 'inline-block';
                 });
             });
 
             // コメント　保存ボタン
-            commentSaveBtn.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    comment.forEach(element => {
-                        element.readOnly = true;
-                    });
-                    commentSaveBtn[index].style.display = 'none';
-                    commentEditBtn[index].style.display = 'inline-block';
+            commentSaveBtns.forEach((saveBtn) => {
+                saveBtn.addEventListener('click', () => {
+                    
+                    const parentWrapper = saveBtn.closest('.comment-wrapper');
+                    const commentTextarea = parentWrapper.querySelector('.comment');
+                    commentTextarea.readOnly = true;
+
+                    saveBtn.style.display = 'none';
+
+                    const commentEditBtn = parentWrapper.querySelector('.comment-edit');
+                    commentEditBtn.style.display = 'inline-block';
+
                 });
             });
         });
