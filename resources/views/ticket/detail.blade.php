@@ -74,22 +74,28 @@
         <div class="mt-5 comments">
             <p class="mb-3"><b>コメント</b></p>
             @foreach ($comments as $comment)
-            <form class="comment-wrapper mt-4 @if($loop->last) border-none @endif">
+            <form id="comment-{{$comment->id}}" action="{{ route('comment.update', $comment) }}" class="comment-wrapper mt-4 @if($loop->last) border-none @endif" method="post">
+                @method('put')
+                @csrf
                 <p>
                     {{ $comment->name }}
                     <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
                     @if ($comment->user_id == Auth::user()->id)
-                    <a class="" href="">削除</a>
+                    <a class="del-btn-{{$comment->id}}" href="javascript:;" onclick="submitDelForm({{$comment->id}})">削除</a>
                     @endif
                 </p>
 
-                <textarea readonly class="comment mb-2 form-control auto-resize-textarea">{{$comment->comment}}</textarea>
+                <textarea name="comment" readonly class="comment mb-2 form-control auto-resize-textarea">{{$comment->comment}}</textarea>
                 @if ($comment->user_id == Auth::user()->id)
                 <div class="text-end mb-3">
-                    <button style="display:none;" class="comment-save btn btn-primary px-3">保存</button>
+                    <button type="submit" style="display:none;" class="comment-save btn btn-primary px-3">保存</button>
                     <button class="comment-edit btn btn-secondary px-3">編集</button>
                 </div>
                 @endif
+            </form>
+            <form class="del-form-{{$comment->id}}" action="{{ route('comment.delete', $comment) }}" method="post">
+                @method('delete')
+                @csrf
             </form>
             @endforeach
             
@@ -227,7 +233,16 @@
             // エラーがあればスクロール
             scrollToError();
         };
-        
+
+        // コメント削除
+        function submitDelForm(commentId) {
+            const form = document.querySelector('.del-form-' + commentId);
+
+            if (form) {
+                form.submit();
+            }
+        }
+
         function scrollToError() {
             // エラーメッセージが含まれる要素を取得
             var errorElements = document.getElementsByClassName('_error-msg');

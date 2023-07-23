@@ -6,6 +6,7 @@ use App\Models\comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\Comment\StoreRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class CommentController extends Controller
 {
@@ -76,12 +77,20 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\comment  $comment
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, comment $comment)
+    public function update(Request $request, Comment $comment)
     {
-        //
+        $comment->comment = $request->input('comment');
+        
+        $comment->save();
+
+        $id = $comment->id;
+        
+        $redirectUrl = URL::previous() . "#comment-$id";
+        
+        return redirect($redirectUrl);
     }
 
     /**
@@ -92,6 +101,8 @@ class CommentController extends Controller
      */
     public function destroy(comment $comment)
     {
-        //
+        $comment->delete();
+        
+        return redirect()->back();
     }
 }

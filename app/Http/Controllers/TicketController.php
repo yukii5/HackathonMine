@@ -150,6 +150,7 @@ class TicketController extends Controller
             ->pluck('status_name', 'status_code');
 
         $comments = Comment::select(
+            'comments.id',
             'name',
             'comments.user_id AS user_id',
             'comments.created_at',

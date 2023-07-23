@@ -53,7 +53,15 @@ Route::get('/project/{pid}/ticket/{tid}', [App\Http\Controllers\TicketController
 
 // チケットにコメント
 Route::post('/project/{pid}/ticket/{tid}', [App\Http\Controllers\CommentController::class, 'store'])
-->middleware('auth')->name('ticket.show');
+->middleware('auth');
+
+// コメント編集
+Route::put('/comment/update/{comment}', [App\Http\Controllers\CommentController::class, 'update'])
+->middleware('auth')->name('comment.update');
+
+// コメント削除
+Route::delete('/comment/delete/{comment}', [App\Http\Controllers\CommentController::class, 'destroy'])
+->middleware('auth')->name('comment.delete');
 
 // チケット ステータス更新
 Route::put('/project/{pid}/ticket/{tid}/status', [App\Http\Controllers\TicketController::class, 'status'])
