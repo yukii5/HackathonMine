@@ -74,7 +74,7 @@
         <div class="mt-5 comments">
             <p class="mb-3"><b>コメント</b></p>
             @foreach ($comments as $comment)
-            <div class="comment-wrapper mt-4 @if($loop->last) border-none @endif">
+            <form class="comment-wrapper mt-4 @if($loop->last) border-none @endif">
                 <p>
                     {{ $comment->name }}
                     <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
@@ -90,7 +90,7 @@
                     <button class="comment-edit btn btn-secondary px-3">編集</button>
                 </div>
                 @endif
-            </div>
+            </form>
             @endforeach
             
             <form class="comment-add-wrapper" action="" method="post">
@@ -141,7 +141,7 @@
 
             // コメント 編集ボタン
             commentEditBtns.forEach((editBtn) => {
-                editBtn.addEventListener('click', () => {
+                editBtn.addEventListener('click', (event) => {
                     
                     const parentWrapper = editBtn.closest('.comment-wrapper');
                     const commentTextarea = parentWrapper.querySelector('.comment');
@@ -151,6 +151,8 @@
 
                     const commentSaveBtn = parentWrapper.querySelector('.comment-save');
                     commentSaveBtn.style.display = 'inline-block';
+
+                    event.preventDefault();
                 });
             });
 
