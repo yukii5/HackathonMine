@@ -59,8 +59,10 @@
                 </tbody>
             </table>
         </div>
-        <a class="btn btn-primary px-3" href="/register">ユーザー作成</a>
-        <a class="btn btn-secondary px-3" href="/">戻る</a>
+        <div class="mt-3 text-end">
+            <a class="btn btn-secondary px-3" href="/">戻る</a>
+            <a class="btn btn-primary px-3" href="/register">新規登録</a>
+        </div>
     </div>
 </body>
 
