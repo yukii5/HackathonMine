@@ -23,23 +23,33 @@
                 <li class="breadcrumb-item active" aria-current="page">新規登録</li>
             </ol>
         </nav>
-        <form enctype="multipart/form-data" class="mt-5 entry-form" action="/" method="post">
-            
+        <form class="mt-5 entry-form" action="{{ route('register') }}" method="post">
+            @csrf
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <div class="mb-4">
                 <label for="name" class="form-label">ユーザー名</label>
-                <input type="text" name="name" class="form-control">
+                <input id="name" type="text" name="name" class="form-control" value="{{ old('name') }}">
             </div>
             <div class="mb-4">
                 <label for="email" class="form-label">メールアドレス</label>
-                <input type="email" name="email" class="form-control">
+                <input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control">
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">パスワード</label>
-                <input type="password" name="password" class="form-control">
+                <input id="password" type="password" name="password" class="form-control">
             </div>
             <div class="mb-4">
-                <label for="password_confirmation" class="form-label">確認用パスワード</label>
-                <input type="password_confirmation" name="password_confirmation" class="form-control">
+                <label for="password-confirm" class="form-label">確認用パスワード</label>
+                <input id="password-confirm" type="password" name="password_confirmation" class="form-control">
             </div>
             <div class="mb-4">
                 <label for="admin" class="form-label">権限</label>

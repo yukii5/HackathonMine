@@ -160,6 +160,18 @@ return [
         'comment' => [
             'max' => 'コメントは、:max文字以下で入力してください。',
         ],
+        'name' => [
+            'required' => ':attributeを入力してください。',
+        ],
+        'email' => [
+            'required' => ':attributeを入力してください。',
+        ],
+        'password' => [
+            'required' => ':attributeを入力してください。',
+        ],
+        'password' => [
+            'confirmed' => ':attributeと確認用パスワードが一致していません。',
+        ],
     ],
 
     /*
@@ -183,6 +195,9 @@ return [
         't_responsible_person_id' => '担当',
         'user_id.*' => 'メンバー',
         'comment' => 'コメント',
+        'name' => 'ユーザー名',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
     ],
 
 ];
