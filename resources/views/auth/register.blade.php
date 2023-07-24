@@ -54,11 +54,11 @@
             <div class="mb-4">
                 <label for="admin" class="form-label">権限</label>
                 <div class="form-check">
-                    <input id="nomal_user" class="form-check-input" type="radio" name="admin" value="0" checked>
+                    <input id="nomal_user" class="form-check-input" type="radio" name="role" value="0" @if (old('role') == 0) checked @endif>
                     <label class="form-check-label" for="nomal_user">通常</label>
                 </div>
                 <div class="form-check">
-                    <input id="admin_user" class="form-check-input" type="radio" name="admin" value="1">
+                    <input id="admin_user" class="form-check-input" type="radio" name="role" value="1" @if (old('role') == 1) checked @endif>
                     <label class="form-check-label" for="admin_user">管理者</label>
                 </div>
 
