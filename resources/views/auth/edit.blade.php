@@ -45,14 +45,14 @@
                 <label for="email" class="form-label">メールアドレス</label>
                 <input id="email" type="email" name="email" value="@if (!old('email')){{ $user->email }}@else{{ old('email') }}@endif" class="form-control">
             </div>
-            <div class="mb-4">
+            <!-- <div class="mb-4">
                 <label for="password" class="form-label">新しいパスワード</label>
                 <input id="password" type="password" name="password" class="form-control">
             </div>
             <div class="mb-4">
                 <label for="password-confirm" class="form-label">確認用パスワード</label>
                 <input id="password-confirm" type="password" name="password_confirmation" class="form-control">
-            </div>
+            </div> -->
             <div class="mb-4">
                 <label for="admin" class="form-label">権限</label>
                 @if (is_null(old('role'))) 
