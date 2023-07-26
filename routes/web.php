@@ -76,8 +76,16 @@ Route::get('/project/{pid}/ticket/{tid}/edit', [App\Http\Controllers\TicketContr
 Route::put('/project/{pid}/ticket/{tid}/edit', [App\Http\Controllers\TicketController::class, 'update'])
 ->middleware('auth')->name('ticket.edit.put');
 
+// メンバー（user）一覧
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');
+
+// メンバー情報編集
+Route::get('/users/{user}/edit/', [App\Http\Controllers\UserController::class, 'edit'])
+->middleware('auth')->name('user.edit');
+
+Route::put('/users/{user}/update/', [App\Http\Controllers\UserController::class, 'update'])
+->middleware('auth')->name('user.update');
 
 Auth::routes();
 

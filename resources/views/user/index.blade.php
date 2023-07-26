@@ -34,12 +34,24 @@
             </ol>
         </nav>
         <div class="table-wrap table-responsive pt-3">
-            
             <div class="text-end mb-3">
-                <p>笹本　健</p>
-                <div class="pt-1"><a href="#">ログアウト</a></div>
+                <p>{{ Auth::user()->name }}</p>
+                <div class="pt-1">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        {{ __('ログアウト') }}
+                    </a>
+                </div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
+
             <h1 class="mb-5">ユーザー一覧</h1>
+
+            <div class="mt-3 mb-5 text-end">
+                <a class="btn btn-primary px-3" href="/register">新規登録</a>
+            </div>
             <table class="table table-condensed">
                 <thead>
                     <tr class="bg-light">
@@ -49,19 +61,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($users as $user)
                     <tr class="pb-3">
                         <td class="ps-3">
-                            <a href="user_create.html">笹本健</a>
+                            <a href="{{ route('user.edit', $user) }}">{{ $user->name }}</a>
                         </td>
-                        <td class="ps-2">example@gmail.com</td>
+                        <td class="ps-2">{{ $user->email }}</td>
+                        @if ($user->admin)
                         <td class="ps-2">管理者</td>
+                        @else
+                        <td class="ps-2">通常</td>
+                        @endif
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
-        <div class="mt-3 text-end">
+        <div class="mt-3 mb-5 text-end">
             <a class="btn btn-secondary px-3" href="/">戻る</a>
-            <a class="btn btn-primary px-3" href="/register">新規登録</a>
         </div>
     </div>
 </body>

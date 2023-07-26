@@ -168,8 +168,6 @@ return [
         ],
         'password' => [
             'required' => ':attributeを入力してください。',
-        ],
-        'password' => [
             'confirmed' => ':attributeと確認用パスワードが一致していません。',
         ],
     ],
