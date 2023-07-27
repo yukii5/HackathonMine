@@ -24,6 +24,9 @@
                 <li class="breadcrumb-item active" aria-current="page">{{ $user->name }}</li>
             </ol>
         </nav>
+        <div class="t-del-btn text-end mb-5">
+            <a href="" onclick="event.preventDefault(); document.getElementById('user-del').submit();">このユーザーを削除</a>
+        </div>
         <form class="mt-5 entry-form" action="{{ route('user.update', $user) }}" method="post">
             @csrf
             @method('put')
@@ -36,7 +39,6 @@
                 </ul>
             </div>
             @endif
-
             <div class="mb-4">
                 <label for="name" class="form-label">ユーザー名</label>
                 <input id="name" type="text" name="name" class="form-control" value="@if (!old('name')){{ $user->name }}@else{{ old('name') }}@endif">
@@ -78,7 +80,12 @@
                     <div><a class="text-light btn btn-secondary me-3" href="/users"><b>戻る</b></a></div>
                     <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
                 </div>
+                
             </div>
+        </form>
+        <form id="user-del" class="ps-2" action="{{ route('user.delete', $user) }}" method="post">
+            @csrf
+            @method('put')
         </form>
     </div>
 </body>

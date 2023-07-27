@@ -87,6 +87,10 @@ Route::get('/users/{user}/edit/', [App\Http\Controllers\UserController::class, '
 Route::put('/users/{user}/update/', [App\Http\Controllers\UserController::class, 'update'])
 ->middleware('auth')->name('user.update');
 
+// メンバー論理削除
+Route::put('/users/{user}/delete/', [App\Http\Controllers\UserController::class, 'delete'])
+->middleware('auth')->name('user.delete');
+
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

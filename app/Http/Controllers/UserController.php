@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,7 +17,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('created_at')->get();
+        $users = User::orderBy('created_at')
+            ->where('del_flg', 0)
+            ->get();
         return view('user.index', compact('users'));
     }
 
@@ -35,6 +38,21 @@ class UserController extends Controller
         $user->admin = $data['role'];
 
         $user->save();
+
+        return redirect()->route('user.index');
+    }
+
+    public function delete(User $user)
+    {
+        $user->del_flg = 1;
+
+        $user->save();
+        
+        // 本人を削除 ログアウト
+        if ($user->id === Auth::user()->id) {
+            Auth::logout();
+            return redirect()->route('projects.index');
+        }
 
         return redirect()->route('user.index');
     }
