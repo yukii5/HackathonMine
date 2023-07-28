@@ -17,6 +17,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('view', Auth::user());
+
         $users = User::orderBy('created_at')
             ->where('del_flg', 0)
             ->get();
