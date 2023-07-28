@@ -16,29 +16,39 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="ms-3 collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="text-light nav-link" href="/users">ユーザー一覧</a>
-                </div>
-            </div>
         </div>
     </nav>
 
     <div class="container-fluid">
 
         <div class="table-wrap table-responsive pt-3">
+
             <div class="text-end mb-3">
-                <p>{{ Auth::user()->name }}</p>
-                <div class="pt-1">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                        {{ __('ログアウト') }}
-                    </a>
-                </div>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
+                
+                <div class="text-end">
+                    <p class="_nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }} @if (Auth::user()->admin)（管理者）@endif</p>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        @if (Auth::user()->admin)
+                        <li>
+                            <a class="dropdown-item" href="/users">ユーザー一覧</a>
+                        </li>
+                        @else
+                        <li>
+                            <a class="dropdown-item" href="/">編集</a>
+                        </li>
+                        @endif
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                            {{__('ログアウト') }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <p class="mt-3 mb-3">プロジェクトを選択してください。</p>
@@ -65,6 +75,7 @@
         </div>
         <a class="btn btn-primary px-3" href="{{ route('project.create') }}">新規プロジェクト</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
