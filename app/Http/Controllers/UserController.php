@@ -41,7 +41,10 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('user.index');
+        if ($user->admin) {
+            return redirect()->route('user.index');
+        }
+        return redirect('/');
     }
 
     public function delete(User $user)
