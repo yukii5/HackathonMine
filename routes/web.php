@@ -81,7 +81,7 @@ Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])
 ->middleware('auth')->name('user.index');
 
 // メンバー情報編集
-Route::get('/users/{user}/edit/', [App\Http\Controllers\UserController::class, 'edit'])
+Route::get('/users/{id}/edit/', [App\Http\Controllers\UserController::class, 'edit'])
 ->middleware('auth')->name('user.edit');
 
 Route::put('/users/{user}/update/', [App\Http\Controllers\UserController::class, 'update'])

@@ -25,8 +25,15 @@ class UserController extends Controller
         return view('user.index', compact('users'));
     }
 
-    public function edit(Request $request, User $user)
+    public function edit(Request $request, $id)
     {
+        // 本人のみ編集可
+        if (explode('/', $request->path())[1] !== (string)Auth::user()->id) {
+            abort(403);
+        }
+        
+        $user = User::find($id);
+
         return view('auth.edit', compact('user'));
     }
 

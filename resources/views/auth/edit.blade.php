@@ -4,8 +4,12 @@
     <nav class="my-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">TOP</a></li>
+            @if (Auth::user()->admin)
             <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $user->name }}</li>
+            @else
+            <li class="breadcrumb-item active" aria-current="page">{{ $user->name }} (編集)</li>
+            @endif
         </ol>
     </nav>
     <div class="t-del-btn text-end mb-5">

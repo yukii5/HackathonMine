@@ -26,7 +26,7 @@
                 @foreach ($users as $user)
                 <tr class="pb-3">
                     <td class="ps-3">
-                        <a href="{{ route('user.edit', $user) }}">{{ $user->name }}</a>
+                        <a href="{{ route('user.edit', ['id' => $user->id]) }}">{{ $user->name }}</a>
                     </td>
                     <td class="ps-2">{{ $user->email }}</td>
                     @if ($user->admin)
