@@ -10,47 +10,38 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg _navbar-light _bg-light bg-dark">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid _align-items-baseline">
             <b><a class="text-light fs-4 navbar-brand" href="#">Hackathon Mine</a></b>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            
+            <div class="pt-1 text-end text-light">
+                <p class="dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }} @if (Auth::user()->admin)（管理者）@endif</p>
+                <ul class="dropdown-menu user-menu-end" aria-labelledby="navbarDropdown">
+                    @if (Auth::user()->admin)
+                    <li>
+                        <a class="dropdown-item" href="/users">ユーザー一覧</a>
+                    </li>
+                    @else
+                    <li>
+                        <a class="dropdown-item" href="/">編集</a>
+                    </li>
+                    @endif
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        {{__('ログアウト') }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </nav>
 
     <div class="container-fluid">
 
         <div class="table-wrap table-responsive pt-3">
-
-            <div class="text-end mb-3">
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-                
-                <div class="text-end">
-                    <p class="_nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }} @if (Auth::user()->admin)（管理者）@endif</p>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        @if (Auth::user()->admin)
-                        <li>
-                            <a class="dropdown-item" href="/users">ユーザー一覧</a>
-                        </li>
-                        @else
-                        <li>
-                            <a class="dropdown-item" href="/">編集</a>
-                        </li>
-                        @endif
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                            {{__('ログアウト') }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
             <p class="mt-3 mb-3">プロジェクトを選択してください。</p>
             <table class="table table-condensed">
                 <thead>
