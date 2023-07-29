@@ -23,7 +23,7 @@
                     </li>
                     @else
                     <li>
-                        <a class="dropdown-item" href="/">編集</a>
+                        <a class="dropdown-item" href="{{ route('user.edit', ['id' => Auth::user()->id]) }}">編集</a>
                     </li>
                     @endif
                     <li><hr class="dropdown-divider"></li>

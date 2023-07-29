@@ -1,17 +1,17 @@
 <x-layout>
 
 <div class="container-fluid">
+    
     <nav class="my-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    @if (Auth::user()->admin)
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">TOP</a></li>
-            @if (Auth::user()->admin)
             <li class="breadcrumb-item"><a href="/users">ユーザー一覧</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $user->name }}</li>
-            @else
-            <li class="breadcrumb-item active" aria-current="page">{{ $user->name }} (編集)</li>
-            @endif
         </ol>
+    @endif
     </nav>
+    
     <div class="t-del-btn text-end mb-5">
         <a href="" onclick="event.preventDefault(); document.getElementById('user-del').submit();">このユーザーを削除</a>
     </div>
@@ -65,7 +65,9 @@
             </div>
             @endif
             <div class="d-flex justify-content-center complete-btn-grp pt-5 mb-5">
+                @if ($user->admin)
                 <div><a class="text-light btn btn-secondary me-3" href="/users"><b>戻る</b></a></div>
+                @endif
                 <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
             </div>
             
