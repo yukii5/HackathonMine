@@ -2,6 +2,15 @@
 <div class="container-fluid">
     <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{route('login')}}" method="post">
         @csrf
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="mb-4">
             <label for="mail" class="form-label">メールアドレス</label>
             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
