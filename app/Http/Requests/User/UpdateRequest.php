@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UpdateRequest extends FormRequest
 {
@@ -23,11 +24,22 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
+        $user = $this->user();
+
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            // 'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|in:0,1',
+            'o_password' => [
+                'required_with:pass_edit',
+                'min:8',
+                function ($attribute, $value, $fail) use ($user) {
+                    if ($this->filled('o_password') && !Hash::check($value, $user->password)) {
+                        $fail('現在のパスワードが正しくありません。');
+                    }
+                },
+            ],
+            'n_password' => 'required_with:pass_edit|min:8|confirmed',
         ];
     }
 

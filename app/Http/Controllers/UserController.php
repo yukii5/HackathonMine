@@ -27,8 +27,13 @@ class UserController extends Controller
 
     public function edit(Request $request, $id)
     {
-        // 本人のみ編集可
-        if (explode('/', $request->path())[1] !== (string)Auth::user()->id) {
+        session(['previous_url' => url()->previous()]);
+        
+        // 本人と管理者のみ編集可
+        if (
+            explode('/', $request->path())[1] !== (string)Auth::user()->id 
+            && !Auth::user()->admin
+        ) {
             abort(403);
         }
         
@@ -43,7 +48,11 @@ class UserController extends Controller
         
         $user->name = $data['name'];
         $user->email = $data['email'];
-        // $user->password = Hash::make($data['password']);
+
+        if (isset($data['n_password'])) {
+            $user->password = Hash::make($data['n_password']);
+        }
+        
         $user->admin = $data['role'];
 
         $user->save();
@@ -51,7 +60,12 @@ class UserController extends Controller
         if ($user->admin) {
             return redirect()->route('user.index');
         }
-        return redirect('/');
+
+        $back = session('previous_url');
+        
+        session()->forget('previous_url');
+        
+        return redirect($back);
     }
 
     public function delete(User $user)
@@ -65,7 +79,7 @@ class UserController extends Controller
             Auth::logout();
             return redirect()->route('projects.index');
         }
-
+        
         return redirect()->route('user.index');
     }
 }

@@ -170,6 +170,13 @@ return [
             'required' => ':attributeを入力してください。',
             'confirmed' => ':attributeと確認用パスワードが一致していません。',
         ],
+        'o_password' => [
+            'required_with' => ':attributeを入力してください。',
+        ],
+        'n_password' => [
+            'required_with' => ':attributeを入力してください。',
+            'confirmed' => ':attributeと確認用パスワードが一致していません。',
+        ],
     ],
 
     /*
@@ -196,6 +203,8 @@ return [
         'name' => 'ユーザー名',
         'email' => 'メールアドレス',
         'password' => 'パスワード',
+        'o_password' => '現在のパスワード',
+        'n_password' => '新しいパスワード',
         'role' => '権限',
     ],
 
