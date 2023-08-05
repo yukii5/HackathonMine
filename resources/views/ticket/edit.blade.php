@@ -27,7 +27,7 @@
             <input type="text" name="ticket_name" class="form-control" value="@if (old('ticket_name')){{old('ticket_name') }}@else{{ $ticket->ticket_name }}@endif">
         </div>
 
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="responsible" class="form-label pe-2">担当</label>
             <div>
                 <select name="t_responsible_person_id" id="responsible" class="form-control">
@@ -46,19 +46,22 @@
             </div>
         </div>
 
-        <div class="mb-4">
-            <label for="start_date" class="form-label">開始日</label>
-            <input type="date" name="start_date" class="form-control" value="{{ empty(@old('start_date')) ? $start_date_f : @old('start_date') }}">
+        <div class="date-wrapper">
+            <div class="start-date-wrapper mb-4">
+                <label for="start_date" class="form-label">開始日</label>
+                <input type="date" name="start_date" class="form-control" value="{{ empty(@old('start_date')) ? $start_date_f : @old('start_date') }}">
+            </div>
+            <div class="end-date-wrapper mb-4">
+                <label for="end_date" class="form-label">期日</label>
+                <input type="date" name="end_date" class="form-control" value="{{ empty(@old('end_date')) ? $end_date_f : @old('end_date') }}">
+            </div>
         </div>
+
         <div class="mb-4">
-            <label for="end_date" class="form-label">期日</label>
-            <input type="date" name="end_date" class="form-control" value="{{ empty(@old('end_date')) ? $end_date_f : @old('end_date') }}">
-        </div>
-        <div class="mb-4">
-            <label for="content" class="form-label">本文</label>
+            <label for="content" class="form-label">内容</label>
             <textarea class="form-control" name="content" id="content" cols="30" rows="10">{{ empty(old('content')) ? $ticket->content : old('content') }}</textarea>
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="user_name" class="form-label pe-2">要確認メンバー</label>
             <div>
                 <select id="member-select" class="form-control">
@@ -86,8 +89,8 @@
             @endforeach
         </div>
         <div class="d-flex justify-content-center complete-btn-grp pt-5 mb-5">
-            <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
             <div><a class="text-light btn btn-secondary me-3" href="/project/{{ $project->id }}"><b>戻る</b></a></div>
+            <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
         </div>
     </form>
 </div>

@@ -48,8 +48,8 @@
         </div>
 
         <div class="d-flex justify-content-center complete-btn-grp pt-5 mb-5">
-            <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
             <div><a class="text-light btn btn-secondary me-3" href="/"><b>戻る</b></a></div>
+            <button type="submit" class="btn btn-primary me-3"><b>保存</b></button>
         </div>
     </form>
 </div>

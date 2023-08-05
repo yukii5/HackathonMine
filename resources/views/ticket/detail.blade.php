@@ -36,8 +36,8 @@
                 </div>
             </div>
         </form>
-        <div class="t-content text-bd mb-3">
-            {{ $ticket->content }}
+        <div class="t-content ps-3 mb-3">
+            <pre>{{ $ticket->content }}</pre>
         </div>
         @if ($ticket->hasUpdatePolicy())
         <div class="text-end">
