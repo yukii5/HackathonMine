@@ -24,7 +24,7 @@
             <label for="project_name" class="form-label">プロジェクト名</label>
             <input type="text" name="project_name" class="form-control" value="@if (old('project_name')){{ old('project_name') }}@else{{ $project->project_name }}@endif">
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="responsible_person" class="form-label">責任者</label>
             <select name="responsible_person_id" class="form-select" aria-label="">
                 <option selected value="">-</option>

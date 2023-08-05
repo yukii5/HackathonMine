@@ -15,7 +15,7 @@
     <div class="t-del-btn text-end mb-5">
         <a href="" onclick="event.preventDefault(); document.getElementById('user-del').submit();">このユーザーを削除</a>
     </div>
-    <form class="mt-5 entry-form" action="{{ route('user.update', $user) }}" method="post">
+    <form class="mt-5 entry-form user-create" action="{{ route('user.update', $user) }}" method="post">
         @csrf
         @method('put')
         @if ($errors->any())
@@ -27,38 +27,38 @@
             </ul>
         </div>
         @endif
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="name" class="form-label">ユーザー名</label>
             <input id="name" type="text" name="name" class="form-control" value="@if (!old('name')){{ $user->name }}@else{{ old('name') }}@endif">
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="email" class="form-label">メールアドレス</label>
             <input id="email" type="email" name="email" value="@if (!old('email')){{ $user->email }}@else{{ old('email') }}@endif" class="form-control">
         </div>
         @if ($user->id == Auth::user()->id)
-        <div class="pt-4 text-end">
+        <div class="pt-4 text-end person-wrapper">
             @if (old('pass_edit'))
             <p id="password-ch-btn" class="btn btn-secondary">パスワードを変更しない</p>
             @else
             <p id="password-ch-btn" class="btn btn-primary">パスワードを変更する</p>
             @endif
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="o-password" class="text-black-50 form-label passwd-grp">現在のパスワード</label>
             <input @if(!old('pass_edit')) disabled @endif id="o-password" type="password" name="o_password" class="form-control">
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="n-password" class="text-black-50 form-label passwd-grp">新しいパスワード</label>
             <input @if(!old('pass_edit')) disabled @endif id="n-password" type="password" name="n_password" class="form-control">
         </div>
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="n-password-confirm" class="text-black-50 form-label passwd-grp">新しいパスワード（確認用）</label>
             <input @if(!old('pass_edit')) disabled @endif id="n-password-confirm" type="password" name="n_password_confirmation" class="form-control">
         </div>
         
         <input id="pass_edit" type="hidden" name="pass_edit" value="{{old('pass_edit')}}">
         @endif
-        <div class="mb-4">
+        <div class="mb-4 person-wrapper">
             <label for="admin" class="form-label">権限</label>
             @if (is_null(old('role'))) 
             <div class="form-check">

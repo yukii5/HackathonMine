@@ -193,6 +193,19 @@ a.pdf-link {
     .entry-form .person-wrapper {
         width: 50%;
     }
+
+    .entry-form.user-create .person-wrapper {
+        margin: 0 auto;
+    }
+
+    /* override */
+    .alert-danger {
+        color: #842029;
+        background-color: #f8d7da;
+        border-color: #f5c2c7;
+        max-width: 50%;
+        margin: 0 auto 1rem;
+    }
 }
 
 @media screen and (max-width: 640px) {
