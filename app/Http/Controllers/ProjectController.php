@@ -19,7 +19,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::select('projects.id', 'project_name', 'users.name', 'status_code')
+        $projects = Project::select('projects.id', 'project_name', 'users.name', 'users.del_flg AS user_del','status_code')
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
         ->get();
 
@@ -33,7 +33,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::where('del_flg', 0)->orderBy('id')->get();
         return view('project.create')->with('users', $users);
     }
 
@@ -92,6 +92,7 @@ class ProjectController extends Controller
             'projects.updated_at AS updated_at', 
             'users.id as leader_id',
             'users.name AS leader', 
+            'users.del_flg AS leader_del', 
             'projects.status_code AS status'
             )
         ->join('users', 'projects.responsible_person_id', '=', 'users.id')
@@ -99,9 +100,11 @@ class ProjectController extends Controller
         
         $this->authorize('view', $project);
 
-        $users = User::select('users.id AS id', 'users.name AS user_name')
+        $users = User::select('users.id AS id', 'users.name AS user_name', 'users.del_flg AS del_flg')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
-        ->where('project_user.project_id', $id)->orderBy('users.id')->get();
+        ->where('project_user.project_id', $id)
+        // ->where('users.del_flg', 0)
+        ->orderBy('users.id')->get();
         
         $create_user = User::select('users.name AS create_user')
         ->join('projects', 'projects.created_user_id', '=', 'users.id')
@@ -119,6 +122,7 @@ class ProjectController extends Controller
             'statuses.status_name',
             'start_date',
             'end_date',
+            'users.del_flg'
         )
         ->where('project_id', $id)
         ->join('users', 'tickets.responsible_person_id', '=', 'users.id')
@@ -171,7 +175,7 @@ class ProjectController extends Controller
         
         $this->authorize('update', $project);
 
-        $users = User::all();
+        $users = User::where('del_flg', 0)->orderBy('id')->get();
 
         $p_users = User::select('users.id AS id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')

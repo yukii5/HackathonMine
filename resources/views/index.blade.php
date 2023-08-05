@@ -17,7 +17,7 @@
                 <td class="ps-3">
                     <a href="{{ route('project.detail', ['id' => $project->id]) }}">{{ $project->project_name }}</a>
                 </td>
-                <td class="ps-2">{{ $project->name }}</td>
+                <td class="ps-2 @if($project->user_del)text-decoration-line-through @endif">{{ $project->name }}</td>
                 <td class="ps-2">@if ($project->status_code === 'active')進行中@else終了@endif</td>
             </tr>
             @endforeach

@@ -11,7 +11,11 @@
     <div class="table-wrap table-responsive pt-3">
 
         <h1 class="mb-3">{{ $ticket->ticket_name }}</h1>
+        @if (!$ticket->responsible_del)
         <p class="mb-3"><b>担当: {{ $ticket->responsible_person }}</b></p>
+        @else
+        <p class="mb-3 text-decoration-line-through"><b>担当: {{ $ticket->responsible_person }}</b></p>
+        @endif
         <div class="mb-5 created-updated">
             <ul>
                 <li>開始日: {{ $start_date_f }}</li>
@@ -52,7 +56,11 @@
             @method('put')
             @csrf
             <p>
-                {{ $comment->name }}
+                @if (!$comment->user_del)
+                <span>{{ $comment->name }}</span>
+                @else
+                <span class="text-decoration-line-through">{{ $comment->name }}</span>
+                @endif
                 <span class="text-black-50 ps-3">{{ $comment->CreatedAt() }}</span>
                 @if ($comment->user_id == Auth::user()->id)
                 <a class="del-btn-{{$comment->id}}" href="javascript:;" onclick="submitDelForm({{$comment->id}})">削除</a>

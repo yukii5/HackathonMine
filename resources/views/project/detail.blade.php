@@ -17,18 +17,26 @@
             </ul>
         </div>
 
-        <p class="mb-3"><b>責任者: {{ $project->leader }}</b></p>
+        <p class="mb-3">
+            @if(!$project->leader_del)
+            <b>責任者: {{ $project->leader }}</b>
+            @else
+            <b class="text-decoration-line-through">責任者: {{ $project->leader }}</b>
+            @endif
+        </p>
 
         <div class="mb-3">
             <p>メンバー</p>
             <ul>
                 @foreach($users as $user)
+                @if(!$user->del_flg)
                 <li>
                     {{ $user->user_name }}
                     @if($user->id === $project->leader_id)
                     <span>（責任者）</span>
                     @endif
                 </li>
+                @endif
                 @endforeach
             </ul>
         </div>
@@ -85,7 +93,11 @@
                     </td>
                     <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->start_date)->format('Y/m/d') }}</td>
                     <td class="ps-2">{{ \Carbon\Carbon::parse($ticket->end_date)->format('Y/m/d') }}</td>
+                    @if ($ticket->del_flg) 
+                    <td class="ps-2 text-decoration-line-through">{{ $ticket->name }}</td>
+                    @else
                     <td class="ps-2">{{ $ticket->name }}</td>
+                    @endif
                     <td class="ps-2">{{ $ticket->status_name }}</td>
                 </tr>
                 @endforeach

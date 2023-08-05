@@ -53,6 +53,7 @@ class TicketController extends Controller
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->join('projects', 'project_user.project_id', '=', 'projects.id')
         ->where('projects.id', $id)
+        ->where('users.del_flg', 0)
             ->orderBy('users.id')
             ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
 
@@ -119,6 +120,7 @@ class TicketController extends Controller
             'start_date', 
             'end_date', 
             'users.name AS responsible_person', 
+            'users.del_flg AS responsible_del', 
             'responsible_person_id', 
             'created_user_id', 
             'project_id', 
@@ -154,7 +156,8 @@ class TicketController extends Controller
             'name',
             'comments.user_id AS user_id',
             'comments.created_at',
-            'comment'
+            'comment',
+            'users.del_flg as user_del'
             )
             ->join('users', 'users.id', '=', 'comments.user_id')
             ->where('ticket_id', $tid)
@@ -192,6 +195,7 @@ class TicketController extends Controller
         $users = User::select('users.id AS user_id', 'users.name AS user_name')
         ->join('project_user', 'users.id', '=', 'project_user.user_id')
         ->where('project_user.project_id', $pid)
+        ->where('users.del_flg', 0)
         ->orderBy('users.id')
         ->pluck('user_name', 'user_id'); // key: = user_id, value: = user_name
 
