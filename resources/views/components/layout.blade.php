@@ -15,7 +15,11 @@
             <b><a class="text-light fs-4 navbar-brand" href="/">Hackathon Mine</a></b>
             @if (Auth::check())
             <div class="pt-1 text-end text-light">
-                <p class="dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ Auth::user()->name }} @if (Auth::user()->admin)（管理者）@endif</p>
+                <p class="dropdown-toggle text-center" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ Auth::user()->name }} @if (Auth::user()->admin)（管理者）@endif
+                    <br>
+                    {{ Auth::user()->email }}
+                </p>
                 <ul class="dropdown-menu user-menu-end" aria-labelledby="navbarDropdown">
                     @if (Auth::user()->admin)
                     <li>
