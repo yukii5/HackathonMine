@@ -70,6 +70,11 @@ class UserController extends Controller
 
     public function delete(User $user)
     {
+        // 管理者のみ
+        if (!Auth::user()->admin) {
+            abort(403);
+        }
+
         $user->del_flg = 1;
 
         $user->save();

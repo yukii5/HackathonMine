@@ -11,10 +11,11 @@
         </ol>
     @endif
     </nav>
-    
+    @if (Auth::user()->admin)
     <div class="t-del-btn text-end mb-5">
         <a href="" onclick="event.preventDefault(); document.getElementById('user-del').submit();">このユーザーを削除</a>
     </div>
+    @endif
     <form class="mt-5 entry-form user-create" action="{{ route('user.update', $user) }}" method="post">
         @csrf
         @method('put')
