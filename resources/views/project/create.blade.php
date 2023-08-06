@@ -99,7 +99,7 @@
 
     // 「全選択」チェックボックスが変更された時の処理
     selectAllCheckbox.addEventListener("change", function() {
-        var checkboxes = document.querySelectorAll('input[name="user_name[]"]');
+        var checkboxes = document.querySelectorAll('input[name="user_id[]"]');
 
         if (selectAllCheckbox.checked) {
             // 「全選択」がチェックされた場合、すべてのチェックボックスを選択状態にする
