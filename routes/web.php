@@ -93,4 +93,3 @@ Route::put('/users/{user}/delete/', [App\Http\Controllers\UserController::class,
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
