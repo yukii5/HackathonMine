@@ -9,7 +9,7 @@
         </ol>
     </nav>
 
-    <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('ticket.store', ['id' => $project->id]) }}" method="POST">
+    <form enctype="multipart/form-data" class="mt-5 entry-form" action="{{ route('ticket.store', ['pid' => $project->id]) }}" method="POST">
         @csrf
         @if ($errors->any())
         <div class="alert alert-danger">
